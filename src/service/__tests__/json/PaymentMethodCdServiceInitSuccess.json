@@ -1,0 +1,17 @@
+[
+  {
+    "language_cd": 1,
+    "payment_method_cd": 1,
+    "payment_name": "payment_name_dummy_1"
+  },
+  {
+    "language_cd": 1,
+    "payment_method_cd": 2,
+    "payment_name": "payment_name_dummy_2"
+  },
+  {
+    "language_cd": 1,
+    "payment_method_cd": 3,
+    "payment_name": "payment_name_dummy_3"
+  }
+]

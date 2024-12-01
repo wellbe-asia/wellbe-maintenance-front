@@ -1,0 +1,24 @@
+[
+  {
+    "id": "11",
+    "shop_id": "10",
+    "country_cd": "1",
+    "state_cd": "1",
+    "address1": "dummy_address1_1",
+    "address2": "dummy_address2_1",
+    "address3": "dummy_address3_1",
+    "latitude": "1",
+    "longitude": "1"
+  },
+  {
+    "id": "12",
+    "shop_id": "10",
+    "country_cd": "2",
+    "state_cd": "2",
+    "address1": "dummy_address1_2",
+    "address2": "",
+    "address3": "",
+    "latitude": "",
+    "longitude": ""
+  }
+]

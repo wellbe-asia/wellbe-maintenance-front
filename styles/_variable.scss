@@ -1,0 +1,98 @@
+
+/* wrapper のpadding*/
+$wrapper_padding :30px 24px 30px;
+$side_wrapper_padding :24px;
+
+/*mixinで使うので頭にmx_をつける*/
+/*カラー設定CSS*/
+$mx_orange:#f6c32d;
+$mx_dark_black:#32312f;
+$mx_light_gray:#f3f2f0;
+$mx_linen:#f3ebe2;
+/* bgcolor*/
+$bg-color: (
+  orange:$mx_orange,
+  dark:$mx_dark_black,
+  light:$mx_light_gray,
+  linen:$mx_linen,  
+)!default;
+@function bg-color($bg-color-key) {
+  @return #{map-get($bg-color, $bg-color-key)}
+};
+
+$mx_black:#000;
+$mx_dark_gray:#787575;
+$mx_gray84:#848484;
+$mx_white:#fff;
+
+/*テキストカラー*/
+$text-color: (
+  default:$mx_black,
+  dark:$mx_dark_gray,
+  light:$mx_gray84,
+  white:$mx_white,
+)!default;
+@function text-color($text-color-key) {
+  @return #{map-get($text-color, $text-color-key)}
+};
+
+
+
+/*フォント*/
+$mx_font_main : -apple-system, 'BlinkMacSystemFont', "游ゴシック", YuGothic, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", "Century Gothic", Helvetica, Arial, "Droid Sans", Sans-Serif;
+$mx_font_brand : 'Alata', sans-serif;
+
+
+/* フォントサイズ */
+$midashi:(
+  l:28px,
+  m:24px,
+  s:18px,
+  ss:16px,
+)!default;
+
+@function midashi($midashi-key) {
+  @return map-get($midashi, $midashi-key)
+};
+
+$common-text:(
+  xl:20px,
+  l:18px,
+  m:16px,
+  s:14px,
+  ss:12px,
+  sss:1px,
+  cap:12px,
+)!default;
+
+@function common_text($common-text-key) {
+  @return map-get($common-text, $common-text-key)
+};
+
+/* hover設定 */
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+      &:hover {
+          @content;
+      }
+  }
+  @media (hover: none) {
+      &:active {
+          @content;
+      }
+  }
+}
+
+/* マージン パディング*/
+.mt_0{margin-top: 0;}
+.mb_0{margin-bottom: 0;}
+
+/* width */
+.w_70{
+  width: 70%;
+  margin: auto;
+}
+.w_100{
+  width: 100%;
+  margin: auto;
+}

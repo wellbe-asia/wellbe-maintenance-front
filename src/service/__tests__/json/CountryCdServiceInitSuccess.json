@@ -1,0 +1,20 @@
+[
+  {
+    "language_cd": 1,
+    "country_cd": 1,
+    "country_cd_iso": "11",
+    "country_name": "country_name_dummy_1"
+  },
+  {
+    "language_cd": 1,
+    "country_cd": 2,
+    "country_cd_iso": "12",
+    "country_name": "country_name_dummy_2"
+  },
+  {
+    "language_cd": 1,
+    "country_cd": 3,
+    "country_cd_iso": "13",
+    "country_name": "country_name_dummy_3"
+  }
+]

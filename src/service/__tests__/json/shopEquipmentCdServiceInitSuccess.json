@@ -1,0 +1,20 @@
+[
+  {
+    "language_cd": 1,
+    "shop_equipment_cd": 1,
+    "shop_equipment_name": "shop_equipment_dummy_1",
+    "unit_name": "unit_name_dummy_1"
+  },
+  {
+    "language_cd": 1,
+    "shop_equipment_cd": 1,
+    "shop_equipment_name": "shop_equipment_dummy_2",
+    "unit_name": "unit_name_dummy_2"
+  },
+  {
+    "language_cd": 1,
+    "shop_equipment_cd": 1,
+    "shop_equipment_name": "shop_equipment_dummy_3",
+    "unit_name": "unit_name_dummy_3"
+  }
+]

@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  variables:
+    DOCKER_BUILDKIT: '1'
+
+phases:
+  install:
+    runtime-versions:
+      docker: 20
+    commands:
+      - echo Nothing to do in the install phase...
+
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t temp_docker_build .
+
+  post_build:
+    commands:
+      - echo Build started on `date`
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 047149194143.dkr.ecr.ap-northeast-1.amazonaws.com
+      - docker tag temp_docker_build:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}
+      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
+      - echo "[{\"name\":\"${CONTAINER_NAME}\", \"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > imagedefinitions.json
+      - printf '{"Version":"1.0","ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDtail.json
+      - ls
+artifacts:
+  files:
+    - imagedefinitions.json
+    - imageDetail.json

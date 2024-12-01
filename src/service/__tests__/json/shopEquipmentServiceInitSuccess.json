@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "11",
+    "ShopId": "10",
+    "EquipmentCd": "1",
+    "EquipmentName": "dummy_equipment_name_1",
+    "Quantity": "101"
+  },
+  {
+    "Id": "12",
+    "ShopId": "10",
+    "EquipmentCd": "2",
+    "EquipmentName": "dummy_equipment_name_2",
+    "Quantity": "102"
+  }
+]

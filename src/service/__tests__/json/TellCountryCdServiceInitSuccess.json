@@ -1,0 +1,20 @@
+[
+  {
+    "language_cd": 1,
+    "tell_country_cd": 1,
+    "country_name": "country_name_dummy_1",
+    "country_no": "11"
+  },
+  {
+    "language_cd": 1,
+    "tell_country_cd": 2,
+    "country_name": "country_name_dummy_2",
+    "country_no": "12"
+  },
+  {
+    "language_cd": 1,
+    "tell_country_cd": 3,
+    "country_name": "country_name_dummy_3",
+    "country_no": "13"
+  }
+]

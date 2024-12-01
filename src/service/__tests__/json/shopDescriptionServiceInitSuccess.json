@@ -1,0 +1,14 @@
+[
+  {
+    "id": "11",
+    "shop_id": "10",
+    "language_cd": "11",
+    "shop_name": "dummy_shop_name_1"
+  },
+  {
+    "id": "12",
+    "shop_id": "10",
+    "language_cd": "11",
+    "shop_name": "dummy_shop_name_12"
+  }
+]

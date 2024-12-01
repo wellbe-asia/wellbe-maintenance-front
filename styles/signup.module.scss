@@ -1,0 +1,77 @@
+@import '_base';
+
+.signup_box {
+  box-sizing: border-box;
+  padding: 16px 24px 34px;
+
+  .signup_box_inner {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    @include mq(pad) {
+      max-width: none;
+    }
+  }
+  .signup_head {
+    margin-bottom: 20px;
+
+    p {
+      font-size: common-text(s);
+    }
+  }
+
+  .signup_inner {
+    background: #fff;
+    padding: 16px 24px 14px;
+    border-radius: 6px;
+    margin-bottom: 0px;
+
+    h3 {
+      font-size: common-text(m);
+      margin: 0 0 10px 0;
+    }
+
+    .form_label {
+      display: block;
+      margin-bottom: 4px;
+      width: 100%;
+      font-size: common-text(s);
+    }
+
+    .PasswordReveal {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .btn_yellow {
+      width: 100%;
+      padding: 14px 0;
+    }
+
+    p {
+      font-size: common-text(s);
+    }
+
+    .MuiSelect-select {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .withdrawal {
+    text-align: right;
+
+    a {
+      font-weight: bold;
+      text-align: right;
+      font-size: common-text(m);
+      color: #000;
+    }
+  }
+}
+
+.confirm_wrapper {
+  padding: 24px 24px 0 24px;
+  height: 100%;
+}

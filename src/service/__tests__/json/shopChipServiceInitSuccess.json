@@ -1,0 +1,16 @@
+[
+  {
+    "id": "11",
+    "shop_id": "10",
+    "currency_cd": "1",
+    "need_shop_chip": true,
+    "shop_chip_standard_ammount": "11.11"
+  },
+  {
+    "id": "12",
+    "shop_id": "10",
+    "currency_cd": "2",
+    "need_shop_chip": false,
+    "shop_chip_standard_ammount": "11.12"
+  }
+]

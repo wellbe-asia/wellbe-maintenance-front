@@ -1,0 +1,20 @@
+[
+  {
+    "id": "11",
+    "shop_id": "10",
+    "content_category": "1",
+    "language_cd": "1",
+    "content_title": "content_title_dummy_1",
+    "content_body": "content_body_1",
+    "sort_order": "1"
+  },
+  {
+    "id": "12",
+    "shop_id": "10",
+    "content_category": "2",
+    "language_cd": "1",
+    "content_title": "content_title_dummy_2",
+    "content_body": "content_body_2",
+    "sort_order": "2"
+  }
+]

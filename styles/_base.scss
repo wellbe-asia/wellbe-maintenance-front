@@ -1,0 +1,101 @@
+@import "_variable";
+@import "_parts";
+
+/*ブレイクポイント*/
+$breakpoints: (
+	'pc_min': 'screen and (max-width: 1200px)',
+	'pad': 'screen and (max-width: 1000px)',
+	'sp': 'screen and (max-width: 640px)',
+	) !default;
+
+@mixin mq($bp: sp) {
+	@media #{map-get($breakpoints, $bp)} {
+		@content;
+	}
+}
+
+.menu_h {
+	font-size: common-text(m);
+	margin: 10px 0 0 0;
+}
+
+.price {
+	color: #f00;
+	text-align: right;
+	margin: 0;
+	padding: 0;
+	font-size: common-text(s);
+	font-weight: bold;
+}
+
+.form_span {
+	font-size: 1.4rem;
+}
+
+.under_line {
+	text-decoration: underline;
+}
+span.under_line{
+	&:hover{
+		cursor: pointer;
+	}
+}
+
+.open {
+	display: block;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: $mx_light_gray;
+
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+.close {
+	display: none;
+}
+
+div.modal_div {
+	position: relative;
+	top: 0;
+	left: 0%;
+	background: rgba(255, 255, 255, 1) ;
+	width: calc(100% - 32px);
+	max-height: calc(100% - 88px);
+	height: auto;
+	border-radius: 12px;
+	padding: 16px 16px 16px;
+	box-sizing: border-box;
+	overflow-y: scroll;
+	margin: 72px 16px 0;
+
+	button.close_button {
+		position: fixed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		right: 16px;
+		top: 16px;
+		background: bg-color(dark);
+		border-radius: 100%;
+		width: 40px;
+		height: 40px;
+		border: none;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		svg {
+			width: 80%;
+			height: auto;
+			fill: #fff;
+		}
+	}
+}
+
+.br_span{
+	display: inline-block;
+}

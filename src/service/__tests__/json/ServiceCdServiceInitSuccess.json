@@ -1,0 +1,17 @@
+[
+  {
+    "language_cd": 1,
+    "service_cd": 1,
+    "service_name": "service_name_dummy_1"
+  },
+  {
+    "language_cd": 1,
+    "service_cd": 2,
+    "service_name": "service_name_dummy_2"
+  },
+  {
+    "language_cd": 1,
+    "service_cd": 3,
+    "service_name": "service_name_dummy_3"
+  }
+]

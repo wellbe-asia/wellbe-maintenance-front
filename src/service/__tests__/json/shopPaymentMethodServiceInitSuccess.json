@@ -1,0 +1,12 @@
+[
+  {
+    "id": "11",
+    "shop_id": "10",
+    "payment_method_cd": "11"
+  },
+  {
+    "id": "12",
+    "shop_id": "10",
+    "payment_method_cd": "12"
+  }
+]
