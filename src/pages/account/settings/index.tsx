@@ -1089,7 +1089,7 @@ export default function AccountSettings() {
                       <Controller
                         name={`ShopExternalConnection.SalonboardType`}
                         {...shopExternalConnectionService.ShopExternalConnectionForm}
-                        rules={validationRule.externalPassword}
+                        rules={validationRule.salonType}
                         render={({ field, fieldState }) => (
                           <FormControl fullWidth>
                             <RadioGroup
@@ -1120,6 +1120,51 @@ export default function AccountSettings() {
                     ) : (
                       <Skeleton variant='rounded' height={45} />
                     )}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <span className={styles.form_label}>
+                      {t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_SHIFTSETTING}
+                    </span>
+                    {!shopExternalConnectionService.loading ? (
+                      <Controller
+                        name={`ShopExternalConnection.IsConnectShiftSetting`}
+                        {...shopExternalConnectionService.ShopExternalConnectionForm}
+                        rules={validationRule.shiftSetting}
+                        render={({ field, fieldState }) => (
+                          <FormControl fullWidth>
+                            <RadioGroup
+                              value={field.value}
+                              onChange={field.onChange}
+                              aria-labelledby='salontype-radio-buttons-group-label'
+                              name='salontype-radio-buttons-group'
+                            >
+                              <FormControlLabel
+                                value={'true'}
+                                control={<Radio />}
+                                label={t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_SHIFTSETTING_YES}
+                              />
+                              <FormControlLabel
+                                value={'false'}
+                                control={<Radio />}
+                                label={t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_SHIFTSETTING_NO}
+                              />
+                            </RadioGroup>
+                            {fieldState.invalid && (
+                              <Typography fontSize='0.8rem' color='error'>
+                                {fieldState.error?.message}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      />
+                    ) : (
+                      <Skeleton variant='rounded' height={45} />
+                    )}
+                    <span className={styles.form_label}>
+                      {
+                        '※サロンボードのスタッフのシフト設定より予約枠を日単位で自動設定します。時間単位の予定は反映されません。'
+                      }
+                    </span>
                   </Grid>
                 </Grid>
                 <Grid>

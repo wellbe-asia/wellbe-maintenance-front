@@ -57,7 +57,8 @@ const ShopExternalConnectionAPI = {
           user_id: shopExternalConnectionType.UserId,
           password: shopExternalConnectionType.Password,
           external_connect_site_cd: shopExternalConnectionType.ExternalConnectSiteCd,
-          salonboard_type: shopExternalConnectionType.SalonboardType
+          salonboard_type: shopExternalConnectionType.SalonboardType,
+          is_connect_shift_setting: String(shopExternalConnectionType.IsConnectShiftSetting)
         }),
         {
           headers: {

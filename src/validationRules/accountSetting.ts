@@ -82,6 +82,12 @@ export const ValidationRules = () => {
     },
     externalPassword: {
       required: t.MESSAGE_REQUIRED_TEXTFIELD
+    },
+    salonType: {
+      required: t.MESSAGE_REQUIRED_SELECT
+    },
+    shiftSetting: {
+      required: t.MESSAGE_REQUIRED_SELECT
     }
   }
 }

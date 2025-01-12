@@ -42,7 +42,7 @@ const ShopExternalConnectionService = () => {
         const c = SetConnection(res.data.shop_external_connect_salonboards[0])
         ShopExternalConnectionForm.setValue('ShopExternalConnection', c)
       } else {
-        const c = SetEmptyConnection()
+        const c = SetEmptyConnection(shopId)
         ShopExternalConnectionForm.setValue('ShopExternalConnection', c)
       }
     } finally {
@@ -60,19 +60,21 @@ const ShopExternalConnectionService = () => {
       Password: val.password,
       IsConfirmed: val.is_confirmed,
       ExternalConnectSiteCd: val.external_connect_site_cd,
-      SalonboardType: val.salonboard_type
+      SalonboardType: val.salonboard_type,
+      IsConnectShiftSetting: val.is_connect_shift_setting
     }
   }
 
-  const SetEmptyConnection = (): shopExternalConnectionSalonboardType => {
+  const SetEmptyConnection = (shopId: string): shopExternalConnectionSalonboardType => {
     return {
       Id: '',
-      ShopId: auth.shop?.Id || '',
+      ShopId: shopId,
       UserId: '',
       Password: '',
       IsConfirmed: undefined,
       ExternalConnectSiteCd: EXTERNAL_SITE_CD.SALONBOARD,
-      SalonboardType: ''
+      SalonboardType: '',
+      IsConnectShiftSetting: ''
     }
   }
 

@@ -6,6 +6,7 @@ export type shopExternalConnectionSalonboardType = {
   IsConfirmed?: boolean
   ExternalConnectSiteCd: string
   SalonboardType: string
+  IsConnectShiftSetting: string
 }
 
 export type shopExternalConnectionSalonboardResponseType = {
@@ -22,4 +23,5 @@ export type shopExternalConnectionSalonboardResponseGetType = {
   is_confirmed: boolean
   external_connect_site_cd: string
   salonboard_type: string
+  is_connect_shift_setting: string
 }
