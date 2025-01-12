@@ -76,6 +76,12 @@ export const ValidationRules = () => {
     },
     ShopMaintenanceLabelValue: {
       required: t.MESSAGE_REQUIRED_SELECT
+    },
+    externalUserId: {
+      required: t.MESSAGE_REQUIRED_TEXTFIELD
+    },
+    externalPassword: {
+      required: t.MESSAGE_REQUIRED_TEXTFIELD
     }
   }
 }

@@ -448,5 +448,27 @@ export default {
   SCREEN_REVIEW_COL_AGE_GENDER: 'Tuổi',
   SCREEN_REVIEW_COL_RATING: 'Điểm',
   SCREEN_REVIEW_COL_REVIEW_COMMENT: 'Đánh giá bình luận',
-  SCREEN_REVIEW_COL_SHOP_NAME: 'Tên cửa hàng'
+  SCREEN_REVIEW_COL_SHOP_NAME: 'Tên cửa hàng',
+  SCREEN_TABS_TAB_BASIC: 'Cơ bản',
+  SCREEN_TABS_TAB_NOTIFICATION: 'Thông báo',
+  SCREEN_TABS_TAB_CONNECTION: 'Liên kết trang web bên ngoài',
+  SCREEN_TABS_TAB_CHANGE_MAIL_ADDRESS: 'Thay đổi địa chỉ email',
+  SCREEN_TABS_TAB_CHANGE_PASSWORD: 'Thay đổi mật khẩu',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_TITLE: 'Liên kết Salon Board (dành cho các salon Nhật Bản)',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_DESCRIPITON:
+    'Vui lòng nhập ID người dùng và mật khẩu của salon board của bạn. Thông tin đặt chỗ sẽ được liên kết giữa Salon Board và WellBe. Khi được liên kết, WellBe sẽ tự động được thêm vào lộ trình đặt chỗ và điểm đến thông báo của hội đồng thẩm mỹ viện.',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_USEID: 'ID người dùng',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_PASSWORD: 'Mật khẩu',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_SALONTYPE: 'Loại salon',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_HAIRE: 'Tiệm làm tóc',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_KIREI: 'Tiệm làm đẹp',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_BUTTON_DELETE: 'Hủy liên kết',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_CONFIRMED_LABEL: 'Đã xác nhận',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_CONFIRMED_DESCRIPTION:
+    'Chúng tôi đã xác nhận rằng bạn có thể đăng nhập bằng bảng salon.',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_NOTCONFIRMED_LABEL: 'Chưa được xác nhận',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_NOTCONFIRMED_DESCRIPTION:
+    'Đăng nhập vào bảng salon chưa được xác nhận. Sẽ mất vài phút để xác nhận, nhưng nếu nó "không được xác nhận" trong một khoảng thời gian nhất định, vui lòng kiểm tra ID người dùng hoặc mật khẩu của bạn.',
+  MESSAGE_ACCOUNT_SETTING_NOTEXISTS_EXTERNAL_CONNECTION:
+    'Tích hợp bên ngoài chưa được thiết lập trong cài đặt tài khoản của bạn. Nếu bạn muốn sử dụng tính năng phê duyệt tự động, vui lòng thiết lập tích hợp bên ngoài trước. Xin lưu ý rằng bạn có thể không đăng nhập được bằng ID người dùng và mật khẩu ngay sau khi thiết lập kết nối bên ngoài. Vui lòng xác nhận rằng màn hình kết nối bên ngoài hiển thị "Đã xác nhận".'
 }

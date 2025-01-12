@@ -447,5 +447,26 @@ export default {
   SCREEN_REVIEW_COL_AGE_GENDER: 'Age',
   SCREEN_REVIEW_COL_RATING: 'Score',
   SCREEN_REVIEW_COL_REVIEW_COMMENT: 'Review Comment',
-  SCREEN_REVIEW_COL_SHOP_NAME: 'Store name'
+  SCREEN_REVIEW_COL_SHOP_NAME: 'Store name',
+  SCREEN_TABS_TAB_BASIC: 'Basic',
+  SCREEN_TABS_TAB_NOTIFICATION: 'Notification',
+  SCREEN_TABS_TAB_CONNECTION: 'External site link',
+  SCREEN_TABS_TAB_CHANGE_MAIL_ADDRESS: 'Change email address',
+  SCREEN_TABS_TAB_CHANGE_PASSWORD: 'Change password',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_TITLE: 'Salon Board link (for Japanese salons)',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_DESCRIPITON:
+    'Please enter your Salon Board user ID and password. Reservation information will be linked between Salon Board and WellBe. When linked, WellBe will be automatically added to reservation route and notification destination on Salon Board.',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_USEID: 'User ID',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_PASSWORD: 'Password',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_SALONTYPE: 'Salon type',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_HAIRE: 'Hair salon',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_KIREI: 'Beautiful salon',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_BUTTON_DELETE: 'Dislink',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_CONFIRMED_LABEL: 'Confirmed',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_CONFIRMED_DESCRIPTION: 'We have confirmed that you can log in to Salon Board.',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_NOTCONFIRMED_LABEL: 'Unconfirmed',
+  SCREEN_ACCOUNT_SETTING_CONNECTION_NOTCONFIRMED_DESCRIPTION:
+    'Your login to Salon Board has not been confirmed. It will take a few minutes to confirm, but if it remains "unconfirmed" after a certain period of time, please check your user ID or password.',
+  MESSAGE_ACCOUNT_SETTING_NOTEXISTS_EXTERNAL_CONNECTION:
+    'External linkage has not been set in the account settings. If you wish to use automatic approval, please set up external linkage first. Please note that immediately after setting up external linkage, you may not be able to confirm login with your user ID and password. Please check that it is "Confirmed" on the external linkage screen.'
 }
