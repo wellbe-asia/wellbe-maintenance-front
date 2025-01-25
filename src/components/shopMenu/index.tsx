@@ -7,7 +7,6 @@ import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import CardHeader from '@mui/material/CardHeader'
 
 // ** service
 import ShopMenuService from '@/service/ShopMenuService'
@@ -16,11 +15,9 @@ import ShopMenuService from '@/service/ShopMenuService'
 import ShopMenuTabCard from '@/components/shopMenu/ShopMenuTabCard'
 
 // ** hook
-import { useLocale } from 'src/@core/hooks/useLocal'
 import { Backdrop, Badge, CircularProgress } from '@mui/material'
 
 export default function ShopMenuCard(props: { shopId: string; basicalCurrencyCd: string }) {
-  const { t } = useLocale()
   const [currentTab, setCurrentTab] = useState(0)
   const shopMenuService = ShopMenuService()
 
@@ -38,7 +35,6 @@ export default function ShopMenuCard(props: { shopId: string; basicalCurrencyCd:
   return (
     <Box sx={{ width: '100%' }}>
       <Card>
-        <CardHeader title={t.SCREEN_TITLE_SHOP_MENU} titleTypographyProps={{ variant: 'h6' }} />
         <CardContent>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 4 }}>
             <Tabs value={currentTab} onChange={handleChangeTabs} aria-label='basic tabs example'>

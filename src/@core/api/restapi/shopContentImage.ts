@@ -1,5 +1,9 @@
 import axios from '@/@core/api/BaseAxios'
-import { ShopContentImageResponseType, ShopContentImageType } from '../type/shopContentImage'
+import {
+  ShopContentImageResponseType,
+  ShopContentImageType,
+  ShopContentImageRequestType
+} from '../type/shopContentImage'
 
 const ShopContentImageAPI = {
   GetShopContentImage: async (
@@ -87,6 +91,39 @@ const ShopContentImageAPI = {
       return error
     }
   },
+  BulkCreateShopContentImage: async (
+    shopContentImageType: ShopContentImageType[]
+  ): Promise<{ status: number; data: ShopContentImageResponseType }> => {
+    try {
+      const shopRequestContentImages = [] as ShopContentImageRequestType[]
+      for (const v of shopContentImageType) {
+        shopRequestContentImages.push({
+          shop_content_id: v.ShopContentId,
+          language_cd: v.LanguageCd,
+          image_category: v.ImageCategory,
+          shop_image_path: v.ShopImagePath,
+          shop_image_alt: v.ShopImageDescription,
+          shop_image_description: v.ShopImageDescription
+        })
+      }
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/bulk/create_shop_content_image`,
+        JSON.stringify({
+          shop_content_images: shopRequestContentImages
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
   UpdateShopContentImage: async (
     token: string,
     shopContentImageType: ShopContentImageType
@@ -117,19 +154,22 @@ const ShopContentImageAPI = {
     }
   },
   UploadShopContentImage: async (
-    shopContentImageType: ShopContentImageType
+    shopContentImage: ShopContentImageType[]
   ): Promise<{ status: number; data: ShopContentImageResponseType | null }> => {
     try {
       const formData = new FormData()
-      if (!shopContentImageType.ShopImage) {
-        return Promise.resolve({ data: null, status: 200 })
+      for (const v of shopContentImage) {
+        if (!v.ShopImage) {
+          return Promise.resolve({ data: null, status: 200 })
+        }
+        formData.append('images', v.ShopImage)
+        formData.append('language_cd', v.LanguageCd)
+        formData.append('shop_content_id', v.ShopContentId)
+        formData.append('image_category', v.ImageCategory)
+        formData.append('shop_image_alt', v.ShopImageDescription)
+        formData.append('shop_image_description', v.ShopImageDescription)
       }
-      formData.append('images', shopContentImageType.ShopImage)
-      formData.append('language_cd', shopContentImageType.LanguageCd)
-      formData.append('shop_content_id', shopContentImageType.ShopContentId)
-      formData.append('image_category', shopContentImageType.ImageCategory)
-      formData.append('shop_image_alt', shopContentImageType.ShopImageDescription)
-      formData.append('shop_image_description', shopContentImageType.ShopImageDescription)
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/upload_shop_content_image`,
         formData,

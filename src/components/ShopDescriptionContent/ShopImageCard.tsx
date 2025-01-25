@@ -9,9 +9,9 @@ import Grid from '@mui/material/Grid'
 import Chip from '@mui/material/Chip'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
+import Typography from '@mui/material/Typography'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import DeleteIcon from '@mui/icons-material/Delete'
-import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import FormHelperText from '@mui/material/FormHelperText'
 import { FormControl, InputLabel, Select } from '@mui/material'
@@ -19,7 +19,6 @@ import { FormControl, InputLabel, Select } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
 
 // ** Service
-import ShopDescriptionContentImageService from '@/service/ShopDescriptionContentImageService'
 import { ShopDescriptionContentFormType } from '@/service/ShopDescriptionContentService'
 
 // ** API
@@ -27,29 +26,23 @@ import { FileExtendsPreview, ShopImageType } from '@/@core/api/type/shopImage'
 
 // ** hook
 import { useLocale } from 'src/@core/hooks/useLocal'
+import { ValidationRules } from './validationRule'
 import { IMAGE_CATEGORY } from '@/@core/utils/constant'
-import { LanguageType } from '@/@core/api/type/cLanguage'
 import ShopImageFilterCategoryCdService from '@/service/ShopImageFilterCategoryCdService'
 import { useRouter } from 'next/router'
 import { getDefaultLanguageCd, getLanguageCdWithValue } from '@/configs/locales/locales'
-import { ValidationRules } from './validationRule'
 import { ShopImageFilterCategoryType } from '@/@core/api/type/cShopImageFilterCategory'
-import { getFileType } from '@/@core/utils/file'
 
 type props = {
   control: Control<ShopDescriptionContentFormType>
   form: UseFormReturn<ShopDescriptionContentFormType, any>
-  index: number
-  languageCds: LanguageType[]
+  shopImages: ShopImageType[]
   shopId: string
-  SetAddShopImage: (languageCd: string, func: (image: ShopImageType) => void) => void
-  AddShopImage: (excludeLanguageCd: string, shopImage: ShopImageType) => void
-  SetRemoveShopImage: (languageCd: string, func: (index: number) => void) => void
-  RemoveShopImage: (excludeLanguageCd: string, index: number) => void
+  AddShopImage: (image: ShopImageType) => void
+  RemoveShopImage: (index: number) => void
 }
 
 export default function ShopImageCard(props: props) {
-  const shopDescriptionContentImageService = ShopDescriptionContentImageService(props.control, props.index)
   const shopImageFilterCategoryCdService = ShopImageFilterCategoryCdService()
   const { t } = useLocale()
   const router = useRouter()
@@ -64,81 +57,41 @@ export default function ShopImageCard(props: props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.locale])
 
-  useEffect(() => {
-    SetShopImageTrigger()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    shopDescriptionContentImageService.AddShopImage,
-    shopDescriptionContentImageService.RemoveShopImage,
-    props.languageCds
-  ])
-
-  const SetShopImageTrigger = () => {
-    if (
-      shopDescriptionContentImageService.AddShopImage != undefined &&
-      shopDescriptionContentImageService.RemoveShopImage != undefined &&
-      props.languageCds.length > 0
-    ) {
-      props.SetAddShopImage(props.languageCds[props.index].LanguageCd, shopDescriptionContentImageService.AddShopImage)
-      props.SetRemoveShopImage(
-        props.languageCds[props.index].LanguageCd,
-        shopDescriptionContentImageService.RemoveShopImage
-      )
-    }
-  }
-
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop: (acceptedFiles: File[]) => {
-      console.log(acceptedFiles)
       acceptedFiles.map(file => {
         Object.assign(file, {
           preview: URL.createObjectURL(file)
         })
-        props.AddShopImage(props.form.getValues(`ShopDescriptionContents.${props.index}.LanguageCd`), {
+        props.AddShopImage({
           Id: '',
           ImageCategory: IMAGE_CATEGORY.MAIN_IMAGE,
           ShopImage: file as FileExtendsPreview,
           ShopId: props.shopId,
-          LanguageCd: props.form.getValues(`ShopDescriptionContents.${props.index}.LanguageCd`),
-          ShopImageAlt: '',
-          ShopImageDescription: '',
-          ShopImagePath: '',
-          ShopImageCategories: []
-        })
-        shopDescriptionContentImageService.AddShopImage({
-          Id: '',
-          ImageCategory: IMAGE_CATEGORY.MAIN_IMAGE,
-          ShopImage: file as FileExtendsPreview,
-          ShopId: props.shopId,
-          LanguageCd: props.form.getValues(`ShopDescriptionContents.${props.index}.LanguageCd`),
+          LanguageCd: props.form.getValues(`ShopDescriptionContent.LanguageCd`),
           ShopImageAlt: '',
           ShopImageDescription: '',
           ShopImagePath: '',
           ShopImageCategories: []
         })
       })
-    }
+    },
+    maxSize: 5242880
   })
 
   const OnDelete = async (index: number) => {
-    props.RemoveShopImage(props.form.getValues(`ShopDescriptionContents.${props.index}.LanguageCd`), index)
-    shopDescriptionContentImageService.RemoveShopImage(index)
+    props.RemoveShopImage(index)
+  }
+
+  const onChangeCategory = (index: number, s: string[] | string) => {
+    props.form.setValue(`ShopDescriptionContent.ShopImages.${index}.ShopImageCategories`, Array.isArray(s) ? s : [s])
   }
 
   useEffect(() => {
-    // if (fileRejections.length > 0 && fileRejections[0].errors.length > 0) {
-    //   setError(t.SCREEN_COL_SHOP_IMAGE_SIZE)
-    // }
-  }, [fileRejections])
-
-  const onChangeCategory = (index: number, s: string[] | string) => {
-    for (let i = 0; i < props.languageCds.length; i++) {
-      props.form.setValue(
-        `ShopDescriptionContents.${i}.ShopImages.${index}.ShopImageCategories`,
-        Array.isArray(s) ? s : [s]
-      )
+    if (fileRejections.length > 0 && fileRejections[0].errors.length > 0) {
+      setError(t.SCREEN_COL_SHOP_IMAGE_SIZE)
     }
-  }
+  }, [fileRejections])
 
   return (
     <ImageList cols={20} sx={{ width: '90%' }}>
@@ -165,37 +118,23 @@ export default function ShopImageCard(props: props) {
                 <UploadFileIcon fontSize='large' color='disabled' sx={{ width: '100%', alignItems: 'center' }} />
               </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Grid container alignItems='center' justifyContent='center'>
-                <Typography sx={{ alignContent: 'center' }} fontSize='medium'>
-                  {t.SCREEN_COL_SHOP_IMAGE_SIZE}
-                </Typography>
-              </Grid>
+            <Grid container alignItems='center' justifyContent='center'>
+              <Typography sx={{ alignContent: 'center' }} fontSize='medium'>
+                {t.SCREEN_COL_SHOP_IMAGE_SIZE}
+              </Typography>
             </Grid>
           </Grid>
         </Box>
       </ImageListItem>
-      {shopDescriptionContentImageService.fields.map((field, index) => (
-        <ImageListItem key={field.id} sx={{ width: 200 }}>
+      {props.shopImages.map((field, index) => (
+        <ImageListItem key={field.Id} sx={{ width: 200 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               {field.ShopImagePath != '' ? (
-                getFileType(field.ShopImagePath) == 'video' ? (
-                  <video src={`${field.ShopImagePath}`} style={{ width: 200, height: 200, position: 'relative' }} />
-                ) : (
-                  <img
-                    src={`${field.ShopImagePath}`}
-                    alt={field.ShopImageAlt}
-                    loading='lazy'
-                    style={{ width: 200, height: 200, position: 'relative' }}
-                  />
-                )
-              ) : getFileType(field.ShopImage?.path || '') == 'video' ? (
-                <video
-                  src={URL.createObjectURL(field.ShopImage as FileExtendsPreview)}
-                  onLoad={() => {
-                    URL.revokeObjectURL(field.ShopImage?.preview ? field.ShopImage?.preview : '')
-                  }}
+                <img
+                  src={`${field.ShopImagePath}`}
+                  alt={field.ShopImageAlt}
+                  loading='lazy'
                   style={{ width: 200, height: 200, position: 'relative' }}
                 />
               ) : (
@@ -206,7 +145,7 @@ export default function ShopImageCard(props: props) {
                   }}
                   alt=''
                   loading='lazy'
-                  key={field.id}
+                  key={field.Id}
                   style={{ width: 200, height: 200, position: 'relative' }}
                 />
               )}
@@ -222,7 +161,7 @@ export default function ShopImageCard(props: props) {
             </Grid>
             <Grid item xs={12}>
               <Controller
-                name={`ShopDescriptionContents.${props.index}.ShopImages.${index}.ShopImageCategories`}
+                name={`ShopDescriptionContent.ShopImages.${index}.ShopImageCategories`}
                 {...props.form}
                 rules={validationRules.shopImageCategory}
                 render={({ field, fieldState }) => (
@@ -232,7 +171,7 @@ export default function ShopImageCard(props: props) {
                     </InputLabel>
                     <Select
                       labelId='area-label'
-                      id={`ShopDescriptionContents.${props.index}.ShopImages.${index}.ShopImageCategories`}
+                      id={`ShopDescriptionContent.ShopImages.${index}.ShopImageCategories`}
                       label={t.SCREEN_COL_SHOP_IMAGE_IMAGE_CATEGORY}
                       notched={true}
                       multiple
@@ -281,7 +220,7 @@ export default function ShopImageCard(props: props) {
           }}
           variant='filled'
           severity='error'
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', color: '#fff' }}
         >
           {error}
         </Alert>

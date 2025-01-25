@@ -1,6 +1,5 @@
 export type FileExtendsPreview = File & {
   preview: string
-  path: string
 }
 
 export type ShopImageType = {
@@ -13,6 +12,17 @@ export type ShopImageType = {
   ShopImageAlt: string
   ShopImageDescription: string
   ShopImageCategories: string[]
+}
+
+export type ShopImageRequestType = {
+  id: string
+  language_cd: string
+  shop_id: string
+  image_category: string
+  shop_image_path: string
+  shop_image_alt: string
+  shop_image_description: string
+  shop_image_filter_category_cds: string[]
 }
 
 export type ShopImageResponseType = {

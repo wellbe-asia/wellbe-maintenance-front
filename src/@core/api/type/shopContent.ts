@@ -1,5 +1,3 @@
-import { ShopContentImageType } from './shopContentImage'
-
 export type ShopContentType = {
   Id: string
   ShopId: string
@@ -8,7 +6,6 @@ export type ShopContentType = {
   ContentTitle: string
   ContentBody: string
   SortOrder: string
-  ShopContentImages: ShopContentImageType[]
 }
 
 export type ShopContentResponseType = {

@@ -13,6 +13,15 @@ export type ShopContentImageType = {
   ShopImageDescription: string
 }
 
+export type ShopContentImageRequestType = {
+  language_cd: string
+  shop_content_id: string
+  image_category: string
+  shop_image_path: string
+  shop_image_alt: string
+  shop_image_description: string
+}
+
 export type ShopContentImageResponseType = {
   result_code: number
   message: string

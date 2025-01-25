@@ -4,14 +4,8 @@ import * as React from 'react'
 // ** MUI
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
-import Stepper from '@mui/material/Stepper'
-import Step from '@mui/material/Step'
-import StepButton from '@mui/material/StepButton'
 import Button from '@mui/material/Button'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
-import { useTheme } from '@mui/material/styles'
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Backdrop, CircularProgress, Divider, Tab, Tabs } from '@mui/material'
 
 // ** Compornents
 import ListErrors from 'src/@core/components/list-errors'
@@ -27,17 +21,41 @@ import ShopDescriptionContentCard from '../ShopDescriptionContent'
 import ShopService from '@/service/ShopService'
 import AccountService from '@/service/AccountService'
 
+interface TabPanelProps {
+  children?: React.ReactNode
+  index: number
+  value: number
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role='tabpanel'
+      hidden={value !== index}
+      id={`account-setting-tabpanel-${index}`}
+      aria-labelledby={`account-setting-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  )
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `account-setting-tab-${index}`,
+    'aria-controls': `account-setting-${index}`
+  }
+}
+
 export default function ShopMaintenance(props: { shopId: string }) {
   const { t } = useLocale()
-  const theme = useTheme()
-  const steps = [t.SCREEN_TITLE_SHOP_BASIC_INFORMATION, t.SCREEN_TITLE_CONTENT, t.SCREEN_TITLE_SHOP_MENU]
-  const [activeStep, setActiveStep] = React.useState(0)
   const [errors, setErrors] = React.useState<string[]>([])
-  const [completed] = React.useState<{
-    [k: number]: boolean
-  }>({})
   const [successSnackbarOpen, setSuccessSnackbarOpen] = React.useState(false)
   const [errorSnackbarOpen, setErrorSnackbarOpen] = React.useState(false)
+  const [tabValue, stTabValue] = React.useState(0)
 
   // service
   const shopService = ShopService()
@@ -49,20 +67,8 @@ export default function ShopMaintenance(props: { shopId: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const totalSteps = () => {
-    return steps.length
-  }
-
-  const completedSteps = () => {
-    return Object.keys(completed).length
-  }
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps()
-  }
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step)
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    stTabValue(newValue)
   }
 
   const onClickPublish = async () => {
@@ -83,46 +89,33 @@ export default function ShopMaintenance(props: { shopId: string }) {
             {t.BUTTON_PUBLISH}
           </Button>
         </Box>
-        <Stepper nonLinear activeStep={activeStep} sx={{ marginBottom: 10 }}>
-          {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
-              <StepButton color='inherit' onClick={handleStep(index)} />
-              {[theme.breakpoints.up('md')] ? (
-                <InputLabel id='area-label' sx={{ marginTop: 2 }}>
-                  {label}
-                </InputLabel>
-              ) : (
-                <div />
-              )}
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {allStepsCompleted() ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>{t.MESSAGE_ALLSTEP_COMPLETE}</Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {activeStep == 0 ? (
-                <Box className='content-center'>
-                  <ShopBasicalInfoCard shopId={props.shopId} />
-                </Box>
-              ) : activeStep == 1 ? (
-                <Box>
-                  <ShopDescriptionContentCard shopId={props.shopId} />
-                </Box>
-              ) : (
-                <Box>
-                  <ShopMenuCard
-                    shopId={props.shopId}
-                    basicalCurrencyCd={String(accountService.Form.getValues('shop.ShopBasicalCurrencyCd'))}
-                  />
-                </Box>
-              )}
-            </React.Fragment>
-          )}
-        </div>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label='account setting tabs'
+          sx={{ mt: '10px', ml: '10px', mr: '10px' }}
+          scrollButtons='auto'
+        >
+          <Tab label={t.SCREEN_TITLE_SHOP_BASIC_INFORMATION} {...a11yProps(0)} />
+          <Tab label={t.SCREEN_TITLE_SHOP_DESCRIPTION} {...a11yProps(1)} />
+          <Tab label={t.SCREEN_TITLE_SHOP_MENU} {...a11yProps(2)} />
+        </Tabs>
+        <Divider sx={{ mt: '10px' }} />
+        <CustomTabPanel value={tabValue} index={0}>
+          <ShopBasicalInfoCard shopId={props.shopId} />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={1}>
+          <ShopDescriptionContentCard
+            shopId={props.shopId}
+            basicalLanguageCd={String(accountService.Form.getValues('shop.ShopBasicalLanguageCd'))}
+          />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={2}>
+          <ShopMenuCard
+            shopId={props.shopId}
+            basicalCurrencyCd={String(accountService.Form.getValues('shop.ShopBasicalCurrencyCd'))}
+          />
+        </CustomTabPanel>
         <InformSnackbar
           open={successSnackbarOpen}
           setOpen={setSuccessSnackbarOpen}

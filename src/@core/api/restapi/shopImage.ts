@@ -1,5 +1,5 @@
 import axios from '@/@core/api/BaseAxios'
-import { ShopImageResponseType, ShopImageType } from '../type/shopImage'
+import { ShopImageRequestType, ShopImageResponseType, ShopImageType } from '../type/shopImage'
 
 const ShopImageAPI = {
   GetWithShopId: async (
@@ -24,7 +24,7 @@ const ShopImageAPI = {
   DeleteShopImage: async (id: string): Promise<{ status: number; data: ShopImageResponseType | null }> => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/cud/shop_image_proofreading/delete`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/delete_shop_image`,
         JSON.stringify({ id: id }),
         {
           headers: {
@@ -94,6 +94,48 @@ const ShopImageAPI = {
       return error
     }
   },
+  BulkCreateShopImage: async (
+    shopImages: ShopImageType[]
+  ): Promise<{ status: number; data: ShopImageResponseType | null }> => {
+    try {
+      const shopRequestImages = [] as ShopImageRequestType[]
+      for (const v of shopImages) {
+        const categories = [] as string[]
+        for (const d of v.ShopImageCategories) {
+          if (d) {
+            categories.push(d)
+          }
+        }
+        shopRequestImages.push({
+          id: v.Id,
+          shop_id: v.ShopId,
+          language_cd: v.LanguageCd,
+          shop_image_alt: v.ShopImageAlt,
+          shop_image_description: v.ShopImageDescription,
+          shop_image_filter_category_cds: categories,
+          shop_image_path: v.ShopImagePath,
+          image_category: v.ImageCategory
+        })
+      }
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/bulk/create_shop_image`,
+        JSON.stringify({
+          shop_images: shopRequestImages
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
   UpdateShopImage: async (
     shopImageType: ShopImageType
   ): Promise<{ status: number; data: ShopImageResponseType | null }> => {
@@ -122,25 +164,28 @@ const ShopImageAPI = {
       return error
     }
   },
-  UploadShopImage: async (shopImageType: ShopImageType) => {
+  UploadShopImage: async (shopImages: ShopImageType[]) => {
     try {
       const formData = new FormData()
-      if (!shopImageType.ShopImage) {
-        return Promise.resolve({ data: null, result_code: 200 })
-      }
-      const categories = [] as string[]
-      for (const v of shopImageType.ShopImageCategories) {
-        if (v) {
-          categories.push(v)
+      for (const v of shopImages) {
+        const categories = [] as string[]
+        for (const d of v.ShopImageCategories) {
+          if (d) {
+            categories.push(d)
+          }
+        }
+        if (v.ShopImage) {
+          formData.append('images', v.ShopImage)
+          formData.append('language_cd', v.LanguageCd)
+          formData.append('shop_id', v.ShopId)
+          formData.append('image_category', v.ImageCategory)
+          formData.append('shop_image_alt', v.ShopImageAlt)
+          formData.append('shop_image_description', v.ShopImageDescription)
+          formData.append('shop_image_filter_category_cd', categories.join(','))
+        } else {
+          return Promise.resolve({ data: null, result_code: 200 })
         }
       }
-      formData.append('images', shopImageType.ShopImage)
-      formData.append('language_cd', shopImageType.LanguageCd)
-      formData.append('shop_id', shopImageType.ShopId)
-      formData.append('image_category', shopImageType.ImageCategory)
-      formData.append('shop_image_alt', shopImageType.ShopImageAlt)
-      formData.append('shop_image_description', shopImageType.ShopImageDescription)
-      formData.append('shop_image_filter_category_cd', categories.join(','))
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/upload_shop_image`, formData, {
         headers: {
           Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE

@@ -22,43 +22,35 @@ import { ValidationRules } from './validationRule'
 import { useLocale } from 'src/@core/hooks/useLocal'
 
 // ** Service
-import { ShopDescriptionContentFormType, ShopDescriptionContentsType } from '@/service/ShopDescriptionContentService'
+import { ShopDescriptionContentFormType } from '@/service/ShopDescriptionContentService'
 
 // Component
 import ShopImageCard from './ShopImageCard'
 import ShopContentImageCard from './ShopContentImageCard'
-import { Alert, AlertColor, Snackbar } from '@mui/material'
-
-// ** API
+import { Alert, AlertColor, FormHelperText, MenuItem, Select, Snackbar } from '@mui/material'
 import { LanguageType } from '@/@core/api/type/cLanguage'
 import { ShopImageType } from '@/@core/api/type/shopImage'
 import { ShopContentImageType } from '@/@core/api/type/shopContentImage'
 
 type propsType = {
-  fields: ShopDescriptionContentsType[]
   form: UseFormReturn<ShopDescriptionContentFormType, any>
   loading: boolean
-  languageCds: LanguageType[]
   shopId: string
-  index: number
-  SetAddShopImage: (languageCd: string, func: (image: ShopImageType) => void) => void
-  AddShopImage: (excludeLanguageCd: string, shopImage: ShopImageType) => void
-  SetRemoveShopImage: (languageCd: string, func: (index: number) => void) => void
-  RemoveShopImage: (excludeLanguageCd: string, index: number) => void
-  SetAddShopContentImage: (languageCd: string, func: (image: ShopContentImageType) => void) => void
-  AddShopContentImage: (excludeLanguageCd: string, shopImage: ShopContentImageType) => void
-  SetRemoveShopContentImage: (languageCd: string, func: (index: number) => void) => void
-  RemoveShopContentImage: (excludeLanguageCd: string, index: number) => void
-  ClearAddShopContentImage: () => void
-  ClearRemoveShopContentImage: () => void
-  ClearAddShopImage: () => void
-  ClearRemoveShopImage: () => void
-  submit: (languageIndex: number) => Promise<{
+  languageCd: string
+  onChangeLanguageCd: (languageCd: string) => void
+  languageCds: LanguageType[]
+  submit: () => Promise<{
     message: string
     trace: 'shopDescription' | 'shopImage' | 'shopContent' | 'shopContentImage' | null
   }>
-  init: (shopId: string) => void
-  translate: (shopId: string, languageIndex: number) => Promise<string>
+  init: (shopId: string, languageCd: string) => void
+  translate: (shopId: string, languageCd: string) => Promise<string>
+  shopImages: ShopImageType[]
+  AddShopImage: (image: ShopImageType) => void
+  RemoveShopImage: (index: number) => void
+  shopContentImages: ShopContentImageType[]
+  AddShopContentImage: (image: ShopContentImageType) => void
+  RemoveShopContentImage: (index: number) => void
 }
 const ShopDescriptionContentTabCard = (props: propsType) => {
   // ** Hook
@@ -73,7 +65,7 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
 
   const onSubmit: SubmitHandler<ShopDescriptionContentFormType> = async () => {
     try {
-      const res = await props.submit(props.index)
+      const res = await props.submit()
 
       if (res.message != '') {
         setSnackbarOpen(true)
@@ -85,11 +77,7 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
       setSnackbarOpen(true)
       setMessage(t.MESSAGE_SUCCESS_SUBMIT)
       setSeverity('success')
-      props.ClearAddShopContentImage()
-      props.ClearRemoveShopContentImage()
-      props.ClearAddShopImage()
-      props.ClearRemoveShopImage()
-      props.init(props.shopId)
+      props.init(props.shopId, props.languageCd)
       setTranslateOpen(true)
     } catch (error) {
       console.error(error)
@@ -100,7 +88,7 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
   const onTranslate = async () => {
     try {
       handleTranslateClose()
-      const message = await props.translate(props.shopId, props.index)
+      const message = await props.translate(props.shopId, props.languageCd)
       if (message) {
         setMessage(message)
         setSnackbarOpen(true)
@@ -108,7 +96,7 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
 
         return
       }
-      props.init(props.shopId)
+      props.init(props.shopId, props.languageCd)
       setMessage(t.MESSAGE_SUCCESS_TRANSLATE)
       setSnackbarOpen(true)
       setSeverity('success')
@@ -126,128 +114,141 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
     <Box className='content-center'>
       <Stack component='form' noValidate onSubmit={props.form.handleSubmit(onSubmit)}>
         <Grid>
-          {props.fields.map((v, i) => {
-            return props.languageCds &&
-              props.languageCds.length > props.index &&
-              v.LanguageCd == props.languageCds[props.index].LanguageCd &&
-              props.loading == false ? (
-              <>
-                <Grid container spacing={3} key={`shop-description-${i}`}>
-                  <Grid item xs={12}>
-                    <Controller
-                      name={`ShopDescriptionContents.${i}.ShopDescription.ShopName`}
-                      {...props.form}
-                      rules={validationRules.shopName}
-                      render={({ field, fieldState }) => (
-                        <FormControl fullWidth>
-                          <TextField
-                            {...field}
-                            {...props.form.register(`ShopDescriptionContents.${i}.ShopDescription.ShopName`)}
-                            fullWidth
-                            autoFocus
-                            type='text'
-                            label={t.SCREEN_COL_SHOP_DESCRIPTION_SHOP_MENU}
-                            id='shop-contact-card-shopEmailAddress'
-                            required
-                            error={fieldState.invalid}
-                            helperText={fieldState.error?.message}
-                            InputLabelProps={{ shrink: true }}
-                          />
-                        </FormControl>
-                      )}
+          <Grid container spacing={3} key={`shop-description`}>
+            <Grid item xs={12}>
+              <Controller
+                name={`ShopDescriptionContent.ShopDescription.LanguageCd`}
+                {...props.form}
+                rules={validationRules.languageCd}
+                render={({ field, fieldState }) => (
+                  <FormControl fullWidth error={fieldState.invalid}>
+                    <Select
+                      {...field}
+                      size='small'
+                      labelId='area-label'
+                      id='ShopDescriptionContent.ShopDescription.LanguageCd'
+                      required
+                      notched={true}
+                      MenuProps={{
+                        sx: {
+                          maxHeight: 300
+                        }
+                      }}
+                      onBlur={field.onBlur}
+                      onChange={e => {
+                        props.onChangeLanguageCd(e.target.value)
+                        field.onChange(e)
+                      }}
+                      value={props.languageCd}
+                    >
+                      {props.languageCds.map((c, j) => {
+                        return (
+                          <MenuItem value={c.LanguageCd} key={`LanguageCd.${j}`}>
+                            {c.LanguageName}
+                          </MenuItem>
+                        )
+                      })}
+                    </Select>
+                    <FormHelperText>{fieldState.error?.message}</FormHelperText>
+                  </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name={`ShopDescriptionContent.ShopDescription.ShopName`}
+                {...props.form}
+                rules={validationRules.shopName}
+                render={({ field, fieldState }) => (
+                  <FormControl fullWidth>
+                    <TextField
+                      {...field}
+                      {...props.form.register(`ShopDescriptionContent.ShopDescription.ShopName`)}
+                      fullWidth
+                      autoFocus
+                      type='text'
+                      label={t.SCREEN_COL_SHOP_DESCRIPTION_SHOP_MENU}
+                      id='shop-contact-card-shopEmailAddress'
+                      required
+                      error={fieldState.invalid}
+                      helperText={fieldState.error?.message}
+                      InputLabelProps={{ shrink: true }}
                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <ShopImageCard
-                      control={props.form.control}
-                      form={props.form}
-                      index={i}
-                      shopId={props.shopId}
-                      languageCds={props.languageCds}
-                      SetAddShopImage={props.SetAddShopImage}
-                      AddShopImage={props.AddShopImage}
-                      SetRemoveShopImage={props.SetRemoveShopImage}
-                      RemoveShopImage={props.RemoveShopImage}
+                  </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ShopImageCard
+                control={props.form.control}
+                form={props.form}
+                shopImages={props.shopImages}
+                AddShopImage={props.AddShopImage}
+                RemoveShopImage={props.RemoveShopImage}
+                shopId={props.shopId}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ marginTop: '10px' }}>
+              {t.SCREEN_TITLE_CONTENT}
+            </Grid>
+            <Grid item xs={12} key={`ShopDescriptionContents-ShopContent`}>
+              <Controller
+                name={`ShopDescriptionContent.ShopContents.ContentTitle`}
+                {...props.form}
+                rules={validationRules.contentTitle}
+                render={({ field, fieldState }) => (
+                  <FormControl fullWidth>
+                    <TextField
+                      {...field}
+                      {...props.form.register(`ShopDescriptionContent.ShopContents.ContentTitle`)}
+                      fullWidth
+                      type='text'
+                      label={t.SCREEN_COL_SHOP_CONTENT_TITLE}
+                      id='shop-contact-card-contentTitle'
+                      required
+                      error={fieldState.invalid}
+                      helperText={fieldState.error?.message}
+                      InputLabelProps={{ shrink: true }}
                     />
-                  </Grid>
-                  <Grid item xs={12} sx={{ marginTop: '10px' }}>
-                    {t.SCREEN_TITLE_CONTENT}
-                  </Grid>
-                  {v.ShopContents.map((d, j) => {
-                    return (
-                      <>
-                        <Grid item xs={12} key={`ShopDescriptionContents-ShopContent-${i}`}>
-                          <Controller
-                            name={`ShopDescriptionContents.${i}.ShopContents.${j}.ContentTitle`}
-                            {...props.form}
-                            rules={validationRules.contentTitle}
-                            render={({ field, fieldState }) => (
-                              <FormControl fullWidth>
-                                <TextField
-                                  {...field}
-                                  {...props.form.register(
-                                    `ShopDescriptionContents.${i}.ShopContents.${j}.ContentTitle`
-                                  )}
-                                  fullWidth
-                                  type='text'
-                                  label={t.SCREEN_COL_SHOP_CONTENT_TITLE}
-                                  id='shop-contact-card-contentTitle'
-                                  required
-                                  error={fieldState.invalid}
-                                  helperText={fieldState.error?.message}
-                                  InputLabelProps={{ shrink: true }}
-                                />
-                              </FormControl>
-                            )}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Controller
-                            name={`ShopDescriptionContents.${i}.ShopContents.${j}.ContentBody`}
-                            {...props.form}
-                            rules={validationRules.contentBody}
-                            render={({ field, fieldState }) => (
-                              <FormControl fullWidth>
-                                <TextField
-                                  {...field}
-                                  {...props.form.register(`ShopDescriptionContents.${i}.ShopContents.${j}.ContentBody`)}
-                                  fullWidth
-                                  type='text'
-                                  label={t.SCREEN_COL_SHOP_CONTENT_BODY}
-                                  id='shop-contact-card-contentBody'
-                                  multiline
-                                  rows={9}
-                                  required
-                                  error={fieldState.invalid}
-                                  helperText={fieldState.error?.message}
-                                  InputLabelProps={{ shrink: true }}
-                                />
-                              </FormControl>
-                            )}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ShopContentImageCard
-                            form={props.form}
-                            control={props.form.control}
-                            contentIndex={j}
-                            languageIndex={i}
-                            languageCds={props.languageCds}
-                            SetAddShopContentImage={props.SetAddShopContentImage}
-                            AddShopContentImage={props.AddShopContentImage}
-                            SetRemoveShopContentImage={props.SetRemoveShopContentImage}
-                            RemoveShopContentImage={props.RemoveShopContentImage}
-                          />
-                        </Grid>
-                      </>
-                    )
-                  })}
-                </Grid>
-              </>
-            ) : (
-              <></>
-            )
-          })}
+                  </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name={`ShopDescriptionContent.ShopContents.ContentBody`}
+                {...props.form}
+                rules={validationRules.contentBody}
+                render={({ field, fieldState }) => (
+                  <FormControl fullWidth>
+                    <TextField
+                      {...field}
+                      {...props.form.register(`ShopDescriptionContent.ShopContents.ContentBody`)}
+                      fullWidth
+                      type='text'
+                      label={t.SCREEN_COL_SHOP_CONTENT_BODY}
+                      id='shop-contact-card-contentBody'
+                      multiline
+                      rows={9}
+                      required
+                      error={fieldState.invalid}
+                      helperText={fieldState.error?.message}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ShopContentImageCard
+                form={props.form}
+                control={props.form.control}
+                shopContentImages={props.shopContentImages}
+                AddShopContentImage={props.AddShopContentImage}
+                RemoveShopContentImage={props.RemoveShopContentImage}
+              />
+            </Grid>
+          </Grid>
 
           <Grid>
             <Box
@@ -280,7 +281,7 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
               }}
               variant='filled'
               severity={severity}
-              sx={{ width: '100%', fontSize: '1.5rem', color: '#fff' }}
+              sx={{ width: '100%', fontSize: '1.2rem', color: '#fff' }}
             >
               {message}
             </Alert>

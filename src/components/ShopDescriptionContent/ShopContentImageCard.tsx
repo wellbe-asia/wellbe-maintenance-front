@@ -11,15 +11,14 @@ import FormControl from '@mui/material/FormControl'
 import Chip from '@mui/material/Chip'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
+import Typography from '@mui/material/Typography'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import DeleteIcon from '@mui/icons-material/Delete'
-import Typography from '@mui/material/Typography'
 
 import { useDropzone } from 'react-dropzone'
 
 // ** Service
 import { ShopDescriptionContentFormType } from '@/service/ShopDescriptionContentService'
-import ShopDescriptionContentContentImageService from '@/service/ShopDescriptionContentContentImageService'
 
 // ** API
 import { FileExtendsPreview, ShopContentImageType } from '@/@core/api/type/shopContentImage'
@@ -28,51 +27,19 @@ import { FileExtendsPreview, ShopContentImageType } from '@/@core/api/type/shopC
 import { useLocale } from 'src/@core/hooks/useLocal'
 import { ValidationRules } from './validationRule'
 import { IMAGE_CATEGORY } from '@/@core/utils/constant'
-import { LanguageType } from '@/@core/api/type/cLanguage'
 
 type props = {
   control: Control<ShopDescriptionContentFormType>
   form: UseFormReturn<ShopDescriptionContentFormType, any>
-  languageIndex: number
-  contentIndex: number
-  languageCds: LanguageType[]
-  SetAddShopContentImage: (languageCd: string, func: (image: ShopContentImageType) => void) => void
-  AddShopContentImage: (excludeLanguageCd: string, shopImage: ShopContentImageType) => void
-  SetRemoveShopContentImage: (languageCd: string, func: (index: number) => void) => void
-  RemoveShopContentImage: (excludeLanguageCd: string, index: number) => void
+  shopContentImages: ShopContentImageType[]
+  AddShopContentImage: (image: ShopContentImageType) => void
+  RemoveShopContentImage: (index: number) => void
 }
 
 export default function ShopContentImageCard(props: props) {
-  const shopDescriptionContentContentImageService = ShopDescriptionContentContentImageService(
-    props.control,
-    props.languageIndex,
-    props.contentIndex
-  )
   const validationRule = ValidationRules()
   const { t } = useLocale()
   const [error, setError] = useState('')
-  useEffect(() => {
-    if (
-      shopDescriptionContentContentImageService.AddShopImage != undefined &&
-      shopDescriptionContentContentImageService.RemoveShopImage != undefined &&
-      props.languageCds.length > 0
-    ) {
-      props.SetAddShopContentImage(
-        props.languageCds[props.languageIndex].LanguageCd,
-        shopDescriptionContentContentImageService.AddShopImage
-      )
-      props.SetRemoveShopContentImage(
-        props.languageCds[props.languageIndex].LanguageCd,
-        shopDescriptionContentContentImageService.RemoveShopImage
-      )
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    shopDescriptionContentContentImageService.AddShopImage,
-    shopDescriptionContentContentImageService.RemoveShopImage,
-    props.languageCds
-  ])
 
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop: (acceptedFiles: File[]) => {
@@ -80,26 +47,12 @@ export default function ShopContentImageCard(props: props) {
         Object.assign(file, {
           preview: URL.createObjectURL(file)
         })
-        props.AddShopContentImage(props.form.getValues(`ShopDescriptionContents.${props.languageIndex}.LanguageCd`), {
+        props.AddShopContentImage({
           Id: '',
           ImageCategory: IMAGE_CATEGORY.MAIN_IMAGE,
           ShopImage: file as FileExtendsPreview,
-          ShopContentId: props.form.getValues(
-            `ShopDescriptionContents.${props.languageIndex}.ShopContents.${props.contentIndex}.Id`
-          ),
-          LanguageCd: props.form.getValues(`ShopDescriptionContents.${props.languageIndex}.LanguageCd`),
-          ShopImageAlt: '',
-          ShopImageDescription: '',
-          ShopImagePath: ''
-        })
-        shopDescriptionContentContentImageService.AddShopImage({
-          Id: '',
-          ImageCategory: IMAGE_CATEGORY.MAIN_IMAGE,
-          ShopImage: file as FileExtendsPreview,
-          ShopContentId: props.form.getValues(
-            `ShopDescriptionContents.${props.languageIndex}.ShopContents.${props.contentIndex}.Id`
-          ),
-          LanguageCd: props.form.getValues(`ShopDescriptionContents.${props.languageIndex}.LanguageCd`),
+          ShopContentId: props.form.getValues(`ShopDescriptionContent.ShopContents.Id`),
+          LanguageCd: props.form.getValues(`ShopDescriptionContent.LanguageCd`),
           ShopImageAlt: '',
           ShopImageDescription: '',
           ShopImagePath: ''
@@ -110,11 +63,7 @@ export default function ShopContentImageCard(props: props) {
   })
 
   const OnDelete = async (index: number) => {
-    props.RemoveShopContentImage(
-      props.form.getValues(`ShopDescriptionContents.${props.languageIndex}.LanguageCd`),
-      index
-    )
-    shopDescriptionContentContentImageService.RemoveShopImage(index)
+    props.RemoveShopContentImage(index)
   }
 
   useEffect(() => {
@@ -158,8 +107,8 @@ export default function ShopContentImageCard(props: props) {
           </Grid>
         </Box>
       </ImageListItem>
-      {shopDescriptionContentContentImageService.fields.map((field, index) => (
-        <ImageListItem key={field.id} sx={{ width: 200 }}>
+      {props.shopContentImages.map((field, index) => (
+        <ImageListItem key={field.Id} sx={{ width: 200 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               {field.ShopImagePath != '' ? (
@@ -177,7 +126,7 @@ export default function ShopContentImageCard(props: props) {
                   }}
                   alt=''
                   loading='lazy'
-                  key={field.id}
+                  key={field.Id}
                   style={{ width: 200, height: 200, position: 'relative' }}
                 />
               )}
@@ -194,16 +143,14 @@ export default function ShopContentImageCard(props: props) {
 
             <Grid item xs={12}>
               <Controller
-                name={`ShopDescriptionContents.${props.languageIndex}.ShopContents.${props.contentIndex}.ShopContentImages.${index}.ShopImageDescription`}
+                name={`ShopDescriptionContent.ShopContentImages.${index}.ShopImageDescription`}
                 {...props.form}
                 rules={validationRule.shopImageDescription}
                 render={({ field, fieldState }) => (
                   <FormControl fullWidth>
                     <TextField
                       {...field}
-                      {...props.form.register(
-                        `ShopDescriptionContents.${props.languageIndex}.ShopContents.${props.contentIndex}.ShopContentImages.${index}.ShopImageDescription`
-                      )}
+                      {...props.form.register(`ShopDescriptionContent.ShopContentImages.${index}.ShopImageDescription`)}
                       fullWidth
                       type='text'
                       autoFocus={false}
@@ -235,7 +182,7 @@ export default function ShopContentImageCard(props: props) {
           }}
           variant='filled'
           severity='error'
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', color: '#fff' }}
         >
           {error}
         </Alert>

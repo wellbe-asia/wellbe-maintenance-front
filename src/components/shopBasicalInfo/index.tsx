@@ -8,7 +8,6 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
@@ -16,6 +15,7 @@ import Stack from '@mui/material/Stack'
 import MenuItem from '@mui/material/MenuItem'
 import {
   Alert,
+  AlertColor,
   Backdrop,
   Checkbox,
   CircularProgress,
@@ -27,9 +27,6 @@ import {
 } from '@mui/material'
 import Select from '@mui/material/Select'
 import Skeleton from '@mui/material/Skeleton'
-
-// ** Compornents
-import ListErrors from 'src/@core/components/list-errors'
 
 // ** ValidationRules
 import { ValidationRules } from './validationRule'
@@ -77,9 +74,10 @@ const ShopBasicalInfoCard = (props: { shopId: string }) => {
   const validationRules = ValidationRules()
 
   // ** State
-  const [errors, setErrors] = useState<string[]>([])
-  const [successOpen, setSuccessOpen] = useState(false)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [languageCd, setLanguageCd] = useState('')
+  const [severity, setSeverity] = useState<AlertColor | undefined>()
+  const [message, setMessage] = useState<string>()
 
   // ** Service
   const shopBasicalInfoService = ShopBasicalInfoService()
@@ -106,11 +104,15 @@ const ShopBasicalInfoCard = (props: { shopId: string }) => {
       const res = await shopBasicalInfoService.Submit()
 
       if (res.message != '') {
-        setErrors([res.message])
+        setSnackbarOpen(true)
+        setMessage(res.message)
+        setSeverity('error')
 
         return
       }
-      setSuccessOpen(true)
+      setSnackbarOpen(true)
+      setMessage(t.MESSAGE_SUCCESS_SUBMIT)
+      setSeverity('success')
       shopBasicalInfoService.Init(props.shopId, languageCd)
     } catch (error) {
       console.error(error)
@@ -121,14 +123,12 @@ const ShopBasicalInfoCard = (props: { shopId: string }) => {
   return (
     <Box className='content-center'>
       <Card>
-        <CardHeader title={t.SCREEN_TITLE_SHOP_BASIC_INFORMATION} titleTypographyProps={{ variant: 'h6' }} />
         <CardContent>
           <Stack
             component='form'
             noValidate
             onSubmit={shopBasicalInfoService.ShopBasicalInfoForm.handleSubmit(onSubmit)}
           >
-            <ListErrors errors={errors} setErrors={setErrors} />
             {!shopBasicalInfoService.loading ? (
               <Grid container sx={{ marginBottom: 4 }} spacing={4}>
                 <Grid item xs={12}>
@@ -809,24 +809,22 @@ const ShopBasicalInfoCard = (props: { shopId: string }) => {
             <CircularProgress color='inherit' />
           </Backdrop>
           <Snackbar
-            open={successOpen}
-            onClose={() => {
-              setSuccessOpen(false)
-            }}
+            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+            open={snackbarOpen}
             autoHideDuration={3000}
-            message={t.MESSAGE_SUCCESS_SUBMIT}
-            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+            onClose={() => {
+              setSnackbarOpen(false)
+            }}
           >
             <Alert
-              elevation={3}
-              variant='filled'
               onClose={() => {
-                setSuccessOpen(false)
+                setSnackbarOpen(false)
               }}
-              sx={{ width: '100%' }}
-              severity={'success'}
+              variant='filled'
+              severity={severity}
+              sx={{ width: '100%', fontSize: '1.2rem', color: '#fff' }}
             >
-              {t.MESSAGE_SUCCESS_SUBMIT}
+              {message}
             </Alert>
           </Snackbar>
         </CardContent>
