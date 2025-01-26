@@ -82,6 +82,26 @@ const StoreList = () => {
       )
     },
     {
+      width: 120,
+      field: 'transition_all',
+      headerName: t.SCREEN_COL_SHOP_LIST_TRANSITION_ALL,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.transition_all}
+        </Typography>
+      )
+    },
+    {
+      width: 120,
+      field: 'transition_last_month',
+      headerName: t.SCREEN_COL_SHOP_LIST_TRANSITION_LAST_MONTH,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.transition_last_month}
+        </Typography>
+      )
+    },
+    {
       width: 300,
       field: 'shop_status_cd',
       headerName: 'Actions',

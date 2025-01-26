@@ -56,6 +56,8 @@ export type ShopResponseGetType = {
   country_name: string
   language_name: string
   rank: number
+  transition_all: number
+  transition_last_month: number
 }
 
 export type ShopAdminPicResponseGetType = {
