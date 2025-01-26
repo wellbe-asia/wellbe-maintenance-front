@@ -35,13 +35,13 @@ const ShopDescriptionContentCard = (props: { shopId: string; basicalLanguageCd: 
 
   // ** Init screen
   useEffect(() => {
-    if (props.shopId && props.basicalLanguageCd) {
-      shopDescriptionContentService.Init(props.shopId, props.basicalLanguageCd)
+    if (props.shopId && languageCd) {
+      shopDescriptionContentService.Init(props.shopId, languageCd)
     }
 
     // Only first time
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.shopId, props.basicalLanguageCd])
+  }, [props.shopId, languageCd])
 
   useEffect(() => {
     console.log('shopDescriptionContentService.shopImageFields', shopDescriptionContentService.shopImageFields)
