@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect, forwardRef, Fragment } from 'react'
 import { Controller, SubmitHandler } from 'react-hook-form'
 
 // ** MUI Imports
@@ -23,6 +23,7 @@ import {
   IconButton,
   InputLabel,
   Snackbar,
+  Tooltip,
   Typography
 } from '@mui/material'
 import Select from '@mui/material/Select'
@@ -40,6 +41,7 @@ import ShopBasicalInfoService, { ShopBasicalInfoType } from '@/service/ShopBasic
 import { getDefaultLanguageCd, getLanguageCdWithValue } from '@/configs/locales/locales'
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
 import { GridAddIcon, GridDeleteIcon } from '@mui/x-data-grid'
+import Link from 'next/link'
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void
@@ -439,6 +441,43 @@ const ShopBasicalInfoCard = (props: { shopId: string }) => {
                           helperText={fieldState.error?.message}
                           InputLabelProps={{ shrink: true }}
                         />
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Controller
+                    name={`ShopBasicalInfo.ShopLocation.GoogleMapEmbeddTag`}
+                    {...shopBasicalInfoService.ShopBasicalInfoForm}
+                    rules={validationRules.googleMapEmbeddTag}
+                    render={({ field, fieldState }) => (
+                      <FormControl fullWidth>
+                        <Tooltip
+                          placement='top-start'
+                          title={
+                            <Fragment>
+                              <Typography color='inherit'>
+                                {t.SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG_DESCRIPTION}
+                              </Typography>
+                              <Link target='_blank' href='https://www.google.co.jp/maps'>
+                                Google map
+                              </Link>
+                            </Fragment>
+                          }
+                        >
+                          <TextField
+                            {...field}
+                            {...register(`ShopBasicalInfo.ShopLocation.GoogleMapEmbeddTag`)}
+                            fullWidth
+                            type='text'
+                            label={t.SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG}
+                            id='ShopBasicalInfo.ShopLocation.GoogleMapEmbeddTag'
+                            required
+                            error={fieldState.invalid}
+                            helperText={fieldState.error?.message}
+                            InputLabelProps={{ shrink: true }}
+                          />
+                        </Tooltip>
                       </FormControl>
                     )}
                   />

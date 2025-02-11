@@ -9,6 +9,7 @@ export type ShopLocationType = {
   Latitude: string
   Longitude: string
   MapUrl: string
+  GoogleMapEmbeddTag: string
 }
 
 export type ShopLocationResponseType = {
@@ -29,4 +30,5 @@ export type ShopLocationResponseGetType = {
   latitude: number
   longitude: number
   map_url: string
+  google_map_embedd_tag: string
 }

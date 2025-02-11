@@ -278,6 +278,9 @@ export default {
   SCREEN_COL_SHOP_LOCATION_COUNTRY: 'Country',
   SCREEN_COL_SHOP_LOCATION_STATE: 'State/Province/Province',
   SCREEN_COL_SHOP_LOCATION_MAP_URL: 'Google Map URL',
+  SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG: 'Google Map Embedding Tag',
+  SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG_DESCRIPTION:
+    'Search for the salon on Google Maps, click "Share > Embed Map > Copy HTML" and paste it. The map will be displayed on the site.',
   SCREEN_TITLE_CONTACT: 'Store Contact',
   SCREEN_COL_SHOP_CONTACT_TELL_COUNTRYNO: 'Tell Country No',
   SCREEN_COL_SHOP_CONTACT_TELLNO: 'Tell No',

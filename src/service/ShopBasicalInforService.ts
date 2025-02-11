@@ -168,7 +168,8 @@ const ShopBasicalInfoService = () => {
           Address3: v.address3,
           Latitude: v.latitude ? String(v.latitude) : '',
           Longitude: v.longitude ? String(v.longitude) : '',
-          MapUrl: v.map_url
+          MapUrl: v.map_url,
+          GoogleMapEmbeddTag: v.google_map_embedd_tag
         })
       } else {
         ShopBasicalInfoForm.setValue('ShopBasicalInfo.ShopLocation', {
@@ -181,7 +182,8 @@ const ShopBasicalInfoService = () => {
           Address3: '',
           Latitude: '',
           Longitude: '',
-          MapUrl: ''
+          MapUrl: '',
+          GoogleMapEmbeddTag: ''
         })
       }
 

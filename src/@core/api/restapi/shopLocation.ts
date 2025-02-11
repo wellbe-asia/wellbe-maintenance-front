@@ -41,7 +41,7 @@ const ShopLocationAPI = {
   ): Promise<{ status: number; data: ShopLocationResponseType | null }> => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/cud/shop_location_proofreading/create`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/create_shop_location`,
         JSON.stringify({
           shop_id: shopLocationType.ShopId,
           country_cd: shopLocationType.CountryCd,
@@ -51,7 +51,8 @@ const ShopLocationAPI = {
           address3: shopLocationType.Address3,
           latitude: shopLocationType.Latitude,
           longitude: shopLocationType.Longitude,
-          map_url: shopLocationType.MapUrl
+          map_url: shopLocationType.MapUrl,
+          google_map_embedd_tag: shopLocationType.GoogleMapEmbeddTag
         }),
         {
           headers: {
@@ -71,7 +72,7 @@ const ShopLocationAPI = {
   ): Promise<{ status: number; data: ShopLocationResponseType | null }> => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/cud/shop_location_proofreading/update`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/update_shop_location`,
         JSON.stringify({
           id: shopLocationType.Id,
           shop_id: shopLocationType.ShopId,
@@ -82,7 +83,8 @@ const ShopLocationAPI = {
           address3: shopLocationType.Address3,
           latitude: shopLocationType.Latitude,
           longitude: shopLocationType.Longitude,
-          map_url: shopLocationType.MapUrl
+          map_url: shopLocationType.MapUrl,
+          google_map_embedd_tag: shopLocationType.GoogleMapEmbeddTag
         }),
         {
           headers: {

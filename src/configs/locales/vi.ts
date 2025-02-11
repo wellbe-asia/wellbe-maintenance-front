@@ -279,6 +279,9 @@ export default {
   SCREEN_COL_SHOP_LOCATION_COUNTRY: 'Quốc gia',
   SCREEN_COL_SHOP_LOCATION_STATE: 'Tiểu bang/Tỉnh/Tỉnh',
   SCREEN_COL_SHOP_LOCATION_MAP_URL: 'Google Map URL',
+  SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG: 'Google Map Embedding Tag',
+  SCREEN_COL_SHOP_LOCATION_MAP_EMBEDDING_TAG_DESCRIPTION:
+    'Tìm kiếm tiệm trên Google Maps, nhấp vào "Chia sẻ > Nhúng bản đồ > Sao chép HTML" và dán vào. Trang web này hiển thị bản đồ.',
   SCREEN_TITLE_CONTACT: 'Liên hệ cửa hàng',
   SCREEN_COL_SHOP_CONTACT_TELL_COUNTRYNO: 'Cho biết Quốc gia Không',
   SCREEN_COL_SHOP_CONTACT_TELLNO: 'Số điện thoại',

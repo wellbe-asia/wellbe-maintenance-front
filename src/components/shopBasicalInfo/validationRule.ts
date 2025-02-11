@@ -33,6 +33,9 @@ export const ValidationRules = () => {
     mapUrl: {
       required: t.MESSAGE_REQUIRED_TEXTFIELD
     },
+    googleMapEmbeddTag: {
+      required: t.MESSAGE_REQUIRED_TEXTFIELD
+    },
     quantity: {
       required: t.MESSAGE_REQUIRED_TEXTFIELD
     },
