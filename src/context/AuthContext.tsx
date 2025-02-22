@@ -61,7 +61,10 @@ const AuthProvider = ({ children }: Props) => {
           } else {
             setLoading(false)
             setMaintenanceAccount({
-              id: response.maintenanceAccountToken.maintenance_account_id
+              id: response.maintenanceAccountToken.maintenance_account_id,
+              AccountGroupCd: '',
+              EmailAddress: '',
+              Name: ''
             })
           }
         })
@@ -98,7 +101,10 @@ const AuthProvider = ({ children }: Props) => {
           } else {
             setLoading(false)
             setMaintenanceAccount({
-              id: response.maintenanceAccountToken.maintenance_account_id
+              id: response.maintenanceAccountToken.maintenance_account_id,
+              AccountGroupCd: '',
+              EmailAddress: '',
+              Name: ''
             })
             router.push('/')
           }
