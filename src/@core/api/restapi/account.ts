@@ -1,5 +1,10 @@
 import axios from '@/@core/api/BaseAxios'
-import { VerifyAccountResponseType, SignupInfo } from '../type/account'
+import {
+  VerifyAccountResponseType,
+  SignupInfo,
+  MaintenanceAuthorizationResponseType,
+  MaintenanceMenuAuthorizationResponseType
+} from '../type/account'
 import { ShopResponseType, ShopType } from '../type/shop'
 import { CommonResponseType } from '../type/commonResponseType'
 
@@ -172,6 +177,80 @@ const AccountAPI = {
           Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
         }
       })
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  GetAuthorizedMenu: async (
+    maintenanceAccountId: string
+  ): Promise<{ status: number; data: MaintenanceMenuAuthorizationResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_MAINTENANCE_URL}/maintenance/menu_authorization/get`,
+        JSON.stringify({
+          maintenance_account_id: maintenanceAccountId
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_MAINTENANCE_WITH_LOGIN
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  CheckMenuAuthorization: async (
+    token: string,
+    maintenanceAccountId: string,
+    url: string
+  ): Promise<{ status: number; data: MaintenanceAuthorizationResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_MAINTENANCE_URL}/maintenance/menu_authorization/verify`,
+        JSON.stringify({
+          maintenance_account_id: maintenanceAccountId,
+          url: url
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_MAINTENANCE_WITH_LOGIN,
+            Wellbe_MaintenanceAccountToken: token
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  CheckApiAuthorization: async (
+    token: string,
+    maintenanceAccountId: string,
+    url: string
+  ): Promise<{ status: number; data: MaintenanceAuthorizationResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_MAINTENANCE_URL}/maintenance/api_authorization/verify`,
+        JSON.stringify({
+          maintenance_account_id: maintenanceAccountId,
+          url: url
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_MAINTENANCE_WITH_LOGIN,
+            Wellbe_MaintenanceAccountToken: token
+          }
+        }
+      )
 
       return response
     } catch (error: any) {

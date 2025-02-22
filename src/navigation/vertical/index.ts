@@ -1,11 +1,34 @@
 // ** Type import
+import AccountAPI from '@/@core/api/factoryAccount'
 import { useLocale } from '@/@core/hooks/useLocal'
+import { SESSION_STORAGE_KEY_KEYWORD } from '@/@core/utils/constant'
+import { useEffect, useState } from 'react'
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
 const Navigation = (): VerticalNavItemsType => {
   const { t } = useLocale()
+  const [authorizedMenues, setAuthorizedMenues] = useState<Map<string, boolean>>()
 
-  return [
+  useEffect(() => {
+    const accountId = window.localStorage.getItem(SESSION_STORAGE_KEY_KEYWORD.ACCOUNTID)!
+    GetData(accountId)
+  }, [])
+
+  const GetData = async (accountId: string) => {
+    const res = await AccountAPI.GetAuthorizedMenu(accountId)
+    const data = (res.data && res.data.results) || []
+
+    // menu_url をキー、is_prefix を値とする Map を作成
+    setAuthorizedMenues(
+      data.reduce((map, item) => {
+        map.set(item.menu_url, item.is_prefix)
+
+        return map
+      }, new Map<string, boolean>())
+    )
+  }
+
+  const baseMenues = [
     {
       sectionTitle: t.MENU_MANAGEMENT
     },
@@ -85,6 +108,22 @@ const Navigation = (): VerticalNavItemsType => {
       path: '/contents'
     }
   ]
+
+  // authorizedMenues に基づいて baseMenues をフィルタリング
+  const filteredMenus = baseMenues.filter(menu => {
+    if (!menu.path) return true // セクションタイトル等はそのまま残す
+
+    if (authorizedMenues) {
+      for (const [url, isPrefix] of authorizedMenues) {
+        if (isPrefix && menu.path.startsWith(url)) return true // 前方一致
+        if (!isPrefix && menu.path === url) return true // 完全一致
+      }
+    }
+
+    return false
+  })
+
+  return filteredMenus
 }
 
 export default Navigation

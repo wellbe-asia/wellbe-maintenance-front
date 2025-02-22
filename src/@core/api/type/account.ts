@@ -62,3 +62,21 @@ export type SignupTypeResponseShopType = {
 export type MaintenanceAccountType = {
   id: string
 }
+
+export type MaintenanceAuthorizationResponseType = {
+  result_code: number
+  message: string
+}
+
+export type MaintenanceMenuAuthorizationResponseType = {
+  result_code: number
+  message: string
+  results?: MaintenanceMenuAuthorizationResponseGetType[]
+}
+
+export type MaintenanceMenuAuthorizationResponseGetType = {
+  id: string
+  account_group_cd: number
+  menu_url: string
+  is_prefix: boolean
+}
