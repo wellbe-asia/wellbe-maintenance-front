@@ -3,7 +3,9 @@ import {
   VerifyAccountResponseType,
   SignupInfo,
   MaintenanceAuthorizationResponseType,
-  MaintenanceMenuAuthorizationResponseType
+  MaintenanceMenuAuthorizationResponseType,
+  MaintenanceAccountResponseType,
+  MaintenanceAccountType
 } from '../type/account'
 import { ShopResponseType, ShopType } from '../type/shop'
 import { CommonResponseType } from '../type/commonResponseType'
@@ -242,6 +244,52 @@ const AccountAPI = {
         JSON.stringify({
           maintenance_account_id: maintenanceAccountId,
           url: url
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_MAINTENANCE_WITH_LOGIN,
+            Wellbe_MaintenanceAccountToken: token
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  GetAccount: async (
+    id: string,
+    languageCd: string
+  ): Promise<{ status: number; data: MaintenanceAccountResponseType }> => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_MAINTENANCE_URL}/maintenance/account/get?id=${id}&language_cd=${languageCd}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_MAINTENANCE_WITH_LOGIN
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  CreateAccount: async (
+    token: string,
+    account: MaintenanceAccountType
+  ): Promise<{ status: number; data: CommonResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_MAINTENANCE_URL}/maintenance/account/create`,
+        JSON.stringify({
+          name: account.Name,
+          email_address: account.EmailAddress,
+          account_group_cd: account.AccountGroupCd
         }),
         {
           headers: {

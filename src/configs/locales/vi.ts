@@ -223,6 +223,13 @@ export default {
   SCREEN_CONFIRM_STATUS_CHANGE_DEPOSIT: 'Bạn có muốn đánh dấu khiếu nại là đã thanh toán không?',
   SCREEN_CONFIRM_STATUS_CHANGE_WITHDRAW:
     'Bạn có muốn xóa khoản phí này không? Một khi đã xóa, nó không thể được khôi phục.',
+  SCREEN_TITLE_MAINTENANCE_ACCOUNT_LIST: 'Danh sách các tài khoản hoạt động',
+  SCREEN_TITLE_MAINTENANCE_ACCOUNT: 'Tài khoản quản lý',
+  SCREEN_COL_MAINTENANCE_ACCOUNT_ID: 'ID',
+  SCREEN_COL_MAINTENANCE_ACCOUNT_NAME: 'Tên',
+  SCREEN_COL_MAINTENANCE_ACCOUNT_USER_NAME: 'Tên người dùng',
+  SCREEN_COL_MAINTENANCE_ACCOUNT_EMAIL: 'E-MAIL',
+  SCREEN_COL_MAINTENANCE_ACCOUNT_ACCOUNT_GROUP: 'Nhóm tài khoản',
   SCREEN_TITLE_ACCOUNT_LIST: 'Danh sách tài khoản',
   SCREEN_COL_ACCOUNT_LIST_ID: 'ID',
   SCREEN_COL_ACCOUNT_LIST_NO: 'Số tài khoản',

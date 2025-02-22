@@ -98,6 +98,11 @@ const Navigation = (): VerticalNavItemsType => {
       path: '/review'
     },
     {
+      title: t.SCREEN_TITLE_MAINTENANCE_ACCOUNT_LIST,
+      icon: 'mdi:account',
+      path: '/maintenance-account'
+    },
+    {
       title: t.SCREEN_TITLE_ACCOUNT_LIST,
       icon: 'mdi:account',
       path: '/wellbe-account'
