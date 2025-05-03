@@ -87,6 +87,7 @@ export default {
   SCREEN_COL_SHOP_LIST_NAME: 'Tên cửa hàng',
   SCREEN_COL_SHOP_LIST_TRANSITION_ALL: '# của PV tất cả',
   SCREEN_COL_SHOP_LIST_TRANSITION_LAST_MONTH: '# của PV hàng tháng',
+  SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT: 'Connection of Salonboard',
   SCREEN_COL_SHOP_LIST_STATUS: 'Trạng thái',
   SCREEN_COL_SHOP_LIST_DETAIL: 'Chi tiết',
   SCREEN_COL_SHOP_LIST_APPROVE: 'Chấp thuận',

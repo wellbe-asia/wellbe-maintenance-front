@@ -102,6 +102,20 @@ const StoreList = () => {
       )
     },
     {
+      width: 120,
+      field: 'external_connect_is_confirmed',
+      headerName: t.SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.external_connect_is_confirmed == null
+            ? '未設定'
+            : params.row.external_connect_is_confirmed == false
+            ? 'ログイン不可'
+            : '連携済'}
+        </Typography>
+      )
+    },
+    {
       width: 300,
       field: 'shop_status_cd',
       headerName: 'Actions',
