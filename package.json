@@ -93,6 +93,7 @@
     "@iconify/utils": "2.1.5",
     "@types/cleave.js": "1.4.7",
     "@types/draft-js": "0.11.10",
+    "@types/google.maps": "^3.58.1",
     "@types/jsonwebtoken": "8.5.9",
     "@types/node": "18.16.3",
     "@types/nprogress": "0.2.0",
