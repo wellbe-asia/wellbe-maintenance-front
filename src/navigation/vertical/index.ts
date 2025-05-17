@@ -113,7 +113,7 @@ const Navigation = (): VerticalNavItemsType => {
       path: '/contents'
     },
     {
-      title: t.SCREEN_TITLE_CONTENTS_LIST,
+      title: t.SCREEN_TITLE_AREA_LIST,
       icon: 'mdi:map-marker',
       path: '/area'
     }
