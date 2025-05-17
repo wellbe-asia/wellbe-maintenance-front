@@ -111,6 +111,11 @@ const Navigation = (): VerticalNavItemsType => {
       title: t.SCREEN_TITLE_CONTENTS_LIST,
       icon: 'mdi:table-of-contents',
       path: '/contents'
+    },
+    {
+      title: t.SCREEN_TITLE_CONTENTS_LIST,
+      icon: 'mdi:map-marker',
+      path: '/area'
     }
   ]
 
