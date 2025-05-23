@@ -200,6 +200,7 @@ const ShopDescriptionContentService = () => {
 
   const Translate = async (shopId: string, languageCd: string): Promise<string> => {
     try {
+      setSubmitLoading(true)
       const res = await ShopDescriptionAPI.TranslateShopDescription(shopId, languageCd)
       if (res.status != 200) {
         const message = GetMessage(
