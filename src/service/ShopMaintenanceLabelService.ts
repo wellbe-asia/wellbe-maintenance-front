@@ -51,15 +51,19 @@ const ShopMaintenanceLabelService = () => {
         if (shopMaintenanceLabels && shopMaintenanceLabels.length > 0) {
           for (const v of shopMaintenanceLabels) {
             ShopMaintenanceLabelsFieldArray.append({
+              Id: v.id,
               ShopId: v.shop_id,
               ShopMaintenanceLabelCd: String(v.shop_maintenance_label_cd),
+              ShopMaintenanceLabelName: v.shop_maintenance_label_name,
               ShopMaintenanceLabelValue: v.shop_maintenance_label_value
             })
           }
         } else {
           ShopMaintenanceLabelsFieldArray.append({
+            Id: '',
             ShopId: shopId,
             ShopMaintenanceLabelCd: SHOP_MAINTENANCE_LABEL.INDIVIDUAL_PAYOUT,
+            ShopMaintenanceLabelName: '',
             ShopMaintenanceLabelValue: ''
           })
         }

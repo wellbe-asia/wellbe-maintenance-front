@@ -832,51 +832,44 @@ export default function AccountSettings() {
                 <Box>
                   <Container sx={{ pt: 5, pb: 5 }}>
                     <Grid container sx={{ marginBottom: 4 }} spacing={2}>
-                      {shopMaintenanceLabelService.ControlledFields.length > 0 && (
-                        <>
-                          <Grid item xs={12} md={7}>
-                            <span className={styles.form_label}>
-                              {shopMaintenanceLabelService.shopMaintenanceLabelCds &&
-                                shopMaintenanceLabelService.shopMaintenanceLabelCds.length > 0 &&
-                                shopMaintenanceLabelService.shopMaintenanceLabelCds[0].shop_maintenance_label_name}
-                              *
-                            </span>
-                            <Controller
-                              name={`shopMaintenanceLabels.0.ShopMaintenanceLabelValue`}
-                              rules={validationRule.ShopMaintenanceLabelValue}
-                              {...shopMaintenanceLabelService.Form}
-                              render={({ field, fieldState }) => (
-                                <FormControl fullWidth error={fieldState.invalid}>
-                                  <Select
-                                    labelId='area-label'
-                                    id='shopMaintenanceLabels.0.ShopMaintenanceLabelValue'
-                                    required
-                                    size='small'
-                                    notched={true}
-                                    MenuProps={{
-                                      sx: {
-                                        maxHeight: 300
-                                      }
-                                    }}
-                                    {...field}
-                                  >
-                                    <MenuItem value={YES_NO.NO}>
-                                      <Typography fontSize={'1.0rem'}>
-                                        {t.SCREEN_ACCOUNT_SETTING_INDIVIDUAL_PAYOUT_NO}
-                                      </Typography>
-                                    </MenuItem>
-                                    <MenuItem value={YES_NO.YES}>
-                                      <Typography fontSize={'1.0rem'}>
-                                        {t.SCREEN_ACCOUNT_SETTING_INDIVIDUAL_PAYOUT_YES}
-                                      </Typography>
-                                    </MenuItem>
-                                  </Select>
-                                </FormControl>
-                              )}
-                            />
-                          </Grid>
-                        </>
-                      )}
+                      {shopMaintenanceLabelService.ControlledFields.map((v, i) => {
+                        return (
+                          <>
+                            <Grid item xs={12} md={7} key={`shop-maintenance-label-${v.ShopMaintenanceLabelCd}`}>
+                              <span className={styles.form_label}>{v.ShopMaintenanceLabelName}*</span>
+                              <Controller
+                                name={`shopMaintenanceLabels.${i}.ShopMaintenanceLabelValue`}
+                                rules={validationRule.ShopMaintenanceLabelValue}
+                                {...shopMaintenanceLabelService.Form}
+                                render={({ field, fieldState }) => (
+                                  <FormControl fullWidth error={fieldState.invalid}>
+                                    <Select
+                                      labelId='area-label'
+                                      id='shopMaintenanceLabels.0.ShopMaintenanceLabelValue'
+                                      required
+                                      size='small'
+                                      notched={true}
+                                      MenuProps={{
+                                        sx: {
+                                          maxHeight: 300
+                                        }
+                                      }}
+                                      {...field}
+                                    >
+                                      <MenuItem value={YES_NO.NO}>
+                                        <Typography fontSize={'1.0rem'}>{t.BUTTON_NO}</Typography>
+                                      </MenuItem>
+                                      <MenuItem value={YES_NO.YES}>
+                                        <Typography fontSize={'1.0rem'}>{t.BUTTON_YES}</Typography>
+                                      </MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                )}
+                              />
+                            </Grid>
+                          </>
+                        )
+                      })}
                     </Grid>
                     <Grid>
                       <Box
