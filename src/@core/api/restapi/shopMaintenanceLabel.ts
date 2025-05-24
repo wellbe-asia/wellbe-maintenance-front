@@ -2,10 +2,13 @@ import axios from '@/@core/api/BaseAxios'
 import { ShopMaintenanceLabelResponseType, ShopMaintenanceLabelType } from '../type/shopMaintenanceLabel'
 
 const ShopMaintenanceLabelAPI = {
-  GetWithShopId: async (shopId: string): Promise<{ status: number; data: ShopMaintenanceLabelResponseType | null }> => {
+  GetWithShopId: async (
+    shopId: string,
+    languageCd: string
+  ): Promise<{ status: number; data: ShopMaintenanceLabelResponseType | null }> => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/r/shop_maintenance_label/shop_id?shop_id=${shopId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/r/shop_maintenance_label/shop_id?shop_id=${shopId}&language_cd=${languageCd}`,
         {
           headers: {
             Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE

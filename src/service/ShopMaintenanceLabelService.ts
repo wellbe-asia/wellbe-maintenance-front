@@ -45,7 +45,7 @@ const ShopMaintenanceLabelService = () => {
       Form.reset()
       setShopId(shopId)
       shopMaintenanceLabelCdService.FetchShopMaintenanceLabelCd(languageCd)
-      const res = await ShopMaintenanceLabelAPI.GetWithShopId(shopId)
+      const res = await ShopMaintenanceLabelAPI.GetWithShopId(shopId, languageCd)
       if (res.status == 200 && res.data) {
         const shopMaintenanceLabels = res.data?.shop_maintenance_labels
         if (shopMaintenanceLabels && shopMaintenanceLabels.length > 0) {
