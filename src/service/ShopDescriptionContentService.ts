@@ -284,29 +284,6 @@ const ShopDescriptionContentService = () => {
         v.ShopContentId = resCreateShopContent.data.shop_content_proofreading?.id || ''
       })
 
-      // shop_content_image
-      if (f.ShopContents.Id != '') {
-        const resShopContentImageDel = await ShopContentImageAPI.DeleteShopContentImageContentIdLanguageCd(
-          f.ShopContents.Id,
-          f.ShopContents.LanguageCd
-        )
-        if (resShopContentImageDel.status != 200) {
-          const message = GetMessage(
-            resShopContentImageDel.status,
-            resShopContentImageDel.data?.result_code || SERVER_STATUS.SEVERERROR,
-            resShopContentImageDel.data?.message || ''
-          )
-
-          return { message, trace: 'shopContent' }
-        }
-      }
-
-      // shop_content_image
-      const resShopContentImage = await submitShopContentImage(shopContentImages)
-      if (resShopContentImage.message != '') {
-        return resShopContentImage
-      }
-
       return { message: '', trace: null }
     } finally {
       setSubmitLoading(false)
@@ -375,52 +352,6 @@ const ShopDescriptionContentService = () => {
         )
 
         return { message, trace: 'shopImage' }
-      }
-    }
-
-    return { message: '', trace: null }
-  }
-
-  const submitShopContentImage = async (
-    shopContentImages: ShopContentImageType[]
-  ): Promise<{
-    message: string
-    trace: 'shopDescription' | 'shopImage' | 'shopContent' | 'shopContentImage' | null
-  }> => {
-    const createShopContentImages = [] as ShopContentImageType[]
-    const uploadShopContentImages = [] as ShopContentImageType[]
-
-    for (const v of shopContentImages) {
-      if (v.ShopImagePath) {
-        createShopContentImages.push(v)
-      } else {
-        uploadShopContentImages.push(v)
-      }
-    }
-
-    if (createShopContentImages.length > 0) {
-      const res = await ShopContentImageAPI.BulkCreateShopContentImage(createShopContentImages)
-      if (res.status != 200) {
-        const message = GetMessage(
-          res.status,
-          res.data?.result_code || SERVER_STATUS.SEVERERROR,
-          res.data?.message || ''
-        )
-
-        return { message, trace: 'shopContent' }
-      }
-    }
-
-    if (uploadShopContentImages.length > 0) {
-      const res = await ShopContentImageAPI.UploadShopContentImage(uploadShopContentImages)
-      if (res.status != 200) {
-        const message = GetMessage(
-          res.status,
-          res.data?.result_code || SERVER_STATUS.SEVERERROR,
-          res.data?.message || ''
-        )
-
-        return { message, trace: 'shopContent' }
       }
     }
 

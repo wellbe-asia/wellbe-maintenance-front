@@ -26,11 +26,9 @@ import { ShopDescriptionContentFormType } from '@/service/ShopDescriptionContent
 
 // Component
 import ShopImageCard from './ShopImageCard'
-import ShopContentImageCard from './ShopContentImageCard'
 import { Alert, AlertColor, FormHelperText, MenuItem, Select, Snackbar } from '@mui/material'
 import { LanguageType } from '@/@core/api/type/cLanguage'
 import { ShopImageType } from '@/@core/api/type/shopImage'
-import { ShopContentImageType } from '@/@core/api/type/shopContentImage'
 
 type propsType = {
   form: UseFormReturn<ShopDescriptionContentFormType, any>
@@ -48,9 +46,6 @@ type propsType = {
   shopImages: ShopImageType[]
   AddShopImage: (image: ShopImageType) => void
   RemoveShopImage: (index: number) => void
-  shopContentImages: ShopContentImageType[]
-  AddShopContentImage: (image: ShopContentImageType) => void
-  RemoveShopContentImage: (index: number) => void
 }
 const ShopDescriptionContentTabCard = (props: propsType) => {
   // ** Hook
@@ -237,15 +232,6 @@ const ShopDescriptionContentTabCard = (props: propsType) => {
                     />
                   </FormControl>
                 )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ShopContentImageCard
-                form={props.form}
-                control={props.form.control}
-                shopContentImages={props.shopContentImages}
-                AddShopContentImage={props.AddShopContentImage}
-                RemoveShopContentImage={props.RemoveShopContentImage}
               />
             </Grid>
           </Grid>

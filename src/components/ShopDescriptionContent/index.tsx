@@ -65,11 +65,8 @@ const ShopDescriptionContentCard = (props: { shopId: string; basicalLanguageCd: 
             onChangeLanguageCd={onChangeLanguageCd}
             languageCds={languageCdService.languageCd}
             shopImages={shopDescriptionContentService.shopImageFields}
-            shopContentImages={shopDescriptionContentService.shopContentImageFields}
             AddShopImage={shopDescriptionContentService.AddShopImage}
             RemoveShopImage={shopDescriptionContentService.RemoveShopImage}
-            AddShopContentImage={shopDescriptionContentService.AddShopContentImage}
-            RemoveShopContentImage={shopDescriptionContentService.RemoveShopContentImage}
             shopId={props.shopId}
           />
         </CardContent>
