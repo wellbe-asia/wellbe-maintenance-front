@@ -154,18 +154,11 @@ const ShopMenuCard = (props: propsType) => {
   const onTranslate = async () => {
     try {
       handleTranslateClose()
-      const message = await props.translate(props.shopId, props.index)
-      if (message) {
-        setMessage(message)
-        setSnackbarOpen(true)
-        setSeverity('error')
+      props.translate(props.shopId, props.index)
 
-        return
-      }
-      props.init(props.shopId)
       setMessage(t.MESSAGE_SUCCESS_TRANSLATE)
       setSnackbarOpen(true)
-      setSeverity('success')
+      setSeverity('info')
     } catch (error) {
       console.error(error)
     } finally {

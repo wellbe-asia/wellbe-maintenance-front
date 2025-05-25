@@ -227,7 +227,6 @@ const ShopMenuService = () => {
   const Translate = async (shopId: string, languageCdIndex: number): Promise<string> => {
     try {
       if (languageCds.length > languageCdIndex) {
-        setSubmitLoading(true)
         const res = await ShopMenuAPI.TranslateShopMenu(shopId || '', languageCds[languageCdIndex].LanguageCd)
         if (res.status != 200) {
           const message = GetMessage(
@@ -244,7 +243,6 @@ const ShopMenuService = () => {
         return t.MESSAGE_ETC_ERROR
       }
     } finally {
-      setSubmitLoading(false)
     }
   }
 

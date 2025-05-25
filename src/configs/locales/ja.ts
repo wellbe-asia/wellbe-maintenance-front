@@ -35,7 +35,7 @@ export default {
   MESSAGE_SOURCE_MENU_NOT_REGISTERED: `翻訳元のメニューが未登録です。登録後に再度お試しください。`,
   MESSAGE_SOURCE_DESCRIPTION_NOT_REGISTERED: `翻訳元の店舗説明が未登録です。登録後に再度お試しください。`,
   MESSAGE_CANNOT_CONTENTS_URL_DUPPLICATE: '指定されたURLはすでに登録されています。他のURLで登録してください。',
-  MESSAGE_SUCCESS_TRANSLATE: '翻訳が完了しました。',
+  MESSAGE_SUCCESS_TRANSLATE: '翻訳を開始しました。翻訳が完了するまでに5分ほどかかります。5分後に再度確認してください。',
   MESSAGE_DELETE_CONFIRM: '削除します。よろしいですか？',
   MESSAGE_COUPON_RATE_OR_AMOUNT_REQUIRED: '割引金額もしくは割引率を入力してください。',
   MESSAGE_COUPON_RATE_RANGE: '割引率は1~100で入力してください。',

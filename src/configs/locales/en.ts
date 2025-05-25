@@ -34,7 +34,8 @@ export default {
   MESSAGE_COMPLETE_CREATE_PAYMENT: 'Payment creation has been completed.',
   MESSAGE_SOURCE_MENU_NOT_REGISTERED: `The menu from which you are translating has not yet been registered. Please register it and try again.`,
   MESSAGE_SOURCE_DESCRIPTION_NOT_REGISTERED: `The store description of the translation source is not yet registered. Please register it and try again.`,
-  MESSAGE_SUCCESS_TRANSLATE: 'Translation completed.',
+  MESSAGE_SUCCESS_TRANSLATE:
+    'Translation has started. It may take about 5 minutes to complete. Please check again after 5 minutes.',
   MESSAGE_DELETE_CONFIRM: 'Can I delete?',
   MESSAGE_COUPON_RATE_OR_AMOUNT_REQUIRED: 'Please enter the discount amount or discount rate.',
   MESSAGE_COUPON_RATE_RANGE: 'Please enter the discount rate between 1 and 100.',
