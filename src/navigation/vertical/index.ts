@@ -63,6 +63,11 @@ const Navigation = (): VerticalNavItemsType => {
       path: '/store-applicated'
     },
     {
+      title: t.SCREEN_TITLE_SHOP_LIST_REVIEWING,
+      icon: 'mdi:store',
+      path: '/store-reviewing'
+    },
+    {
       title: t.SCREEN_TITLE_SCRAPING_KEYWORD_LIST,
       icon: 'mdi:search-web',
       path: '/scraping-keyword'

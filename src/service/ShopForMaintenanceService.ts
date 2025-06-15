@@ -116,6 +116,30 @@ const ShopForMaintenanceService = () => {
     }
   }
 
+  const GetShopListReviewing = async (): Promise<{ message: string }> => {
+    try {
+      setLoading(true)
+      const language = getLanguageCdWithValue(locale || DEFAULT_LANGUAGE)
+      const res = await ShopAPI.getShopListReviewing(language)
+      if (res.status != 200) {
+        const message = GetMessage(
+          res.status,
+          res.data?.result_code || SERVER_STATUS.SEVERERROR,
+          res.data?.message || ''
+        )
+
+        setShopList([])
+
+        return { message: message }
+      }
+      setShopList(res.data.shops || [])
+
+      return { message: '' }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const Approve = async (shopId: string): Promise<{ message: string }> => {
     try {
       setLoading(true)
@@ -182,6 +206,7 @@ const ShopForMaintenanceService = () => {
     GetShopContractedList,
     GetShopScrapedList,
     GetShopListApplicated,
+    GetShopListReviewing,
     Approve,
     Suspend,
     Delete,

@@ -94,6 +94,7 @@ export default {
   SCREEN_TITLE_AREA_LIST_KBID: 'KB ID',
   SCREEN_TITLE_SHOP_LIST: 'Danh sách cửa hàng',
   SCREEN_TITLE_SHOP_LIST_APPLICATED: 'Danh sách cửa hàng được áp dụng',
+  SCREEN_TITLE_SHOP_LIST_REVIEWING: 'Danh sách cửa hàng đang xem trước',
   SCREEN_TITLE_SHOP_LIST_SCRAPED: 'Danh sách cửa hàng bị cạo',
   SCREEN_COL_SHOP_LIST_ID: 'ID',
   SCREEN_COL_SHOP_LIST_NO: 'Số cửa hàng',

@@ -192,6 +192,23 @@ const ShopAPI = {
       return error
     }
   },
+  getShopListReviewing: async (languageCd: string): Promise<{ status: number; data: ShopResponseType }> => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/maintenance/query/shop_reviewing?language_cd=${languageCd}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
   getShopIndvidualPaymentList: async (
     languageCd: string
   ): Promise<{ status: number; data: ShopPaymentResponseType }> => {

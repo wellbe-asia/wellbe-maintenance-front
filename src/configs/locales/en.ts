@@ -93,6 +93,7 @@ export default {
   SCREEN_TITLE_AREA_LIST_KBID: 'KB ID',
   SCREEN_TITLE_SHOP_LIST: 'Store List',
   SCREEN_TITLE_SHOP_LIST_APPLICATED: 'Store List Applicated',
+  SCREEN_TITLE_SHOP_LIST_REVIEWING: 'Store List Previewing',
   SCREEN_TITLE_SHOP_LIST_SCRAPED: 'Store List Scraped',
   SCREEN_COL_SHOP_LIST_ID: 'ID',
   SCREEN_COL_SHOP_LIST_NO: 'Store Number',
