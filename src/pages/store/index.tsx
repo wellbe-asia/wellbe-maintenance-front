@@ -103,6 +103,16 @@ const StoreList = () => {
     },
     {
       width: 120,
+      field: 'reservation_limit_total_day',
+      headerName: t.SCREEN_COL_SHOP_LIST_RESERVATION_LIMIT_TOTAL_DAY,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.reservation_limit_total_day}
+        </Typography>
+      )
+    },
+    {
+      width: 120,
       field: 'external_connect_is_confirmed',
       headerName: t.SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT,
       renderCell: (params: GridRenderCellParams) => (
