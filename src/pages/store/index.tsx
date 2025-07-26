@@ -103,6 +103,16 @@ const StoreList = () => {
     },
     {
       width: 120,
+      field: 'booking_method_name',
+      headerName: t.SCREEN_COL_SHOP_LIST_BOOKING_METHOD,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.booking_method_name}
+        </Typography>
+      )
+    },
+    {
+      width: 120,
       field: 'reservation_limit_total_day',
       headerName: t.SCREEN_COL_SHOP_LIST_RESERVATION_LIMIT_TOTAL_DAY,
       renderCell: (params: GridRenderCellParams) => (
