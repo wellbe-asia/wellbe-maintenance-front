@@ -59,6 +59,7 @@ export type ShopResponseGetType = {
   transition_all: number
   transition_last_month: number
   reservation_limit_total_day: number
+  shop_booking_available_day: number
 }
 
 export type ShopAdminPicResponseGetType = {

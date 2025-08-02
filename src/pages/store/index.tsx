@@ -123,6 +123,16 @@ const StoreList = () => {
     },
     {
       width: 120,
+      field: 'shop_booking_available_day',
+      headerName: t.SCREEN_COL_SHOP_LIST_BOOKING_AVAILABLE_DAY,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.shop_booking_available_day}
+        </Typography>
+      )
+    },
+    {
+      width: 120,
       field: 'external_connect_is_confirmed',
       headerName: t.SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT,
       renderCell: (params: GridRenderCellParams) => (
