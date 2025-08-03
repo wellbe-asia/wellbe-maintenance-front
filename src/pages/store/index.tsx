@@ -167,6 +167,11 @@ const StoreList = () => {
                 {t.BUTTON_SHOP_COUPON}
               </Button>
             </Link>
+            <Link href={`/booking-limit?shop_id=${params.row.id}`} target='_blank'>
+              <Button size='small' variant='outlined' color='secondary'>
+                {t.BUTTON_LIMIT_SETTING}
+              </Button>
+            </Link>
           </>
         )
       }

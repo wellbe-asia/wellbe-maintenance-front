@@ -157,4 +157,14 @@ export const dateFormatHyphen2Hyphen = (dateString: string): string => {
   return ''
 }
 
+export const getPreviousSunday = (currentDate: Date): Date => {
+  const dayOfWeek = currentDate.getDay()
+
+  const daysUntilPreviousSunday = dayOfWeek === 0 ? 7 : dayOfWeek
+  const previousSunday = new Date(currentDate)
+  previousSunday.setDate(currentDate.getDate() - daysUntilPreviousSunday)
+
+  return previousSunday
+}
+
 export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms))
