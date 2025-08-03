@@ -144,9 +144,11 @@ const BookingList = () => {
       field: 'shopId',
       headerName: t.SCREEN_COL_BOOKING_LIST_SHOP_ID,
       renderCell: (params: GridRenderCellParams) => (
-        <Typography variant='body2' sx={{ color: 'text.primary' }}>
-          {params.row.shopId}
-        </Typography>
+        <Link href={`/account/settings?shop_id=${params.row.shopId}`} target='_blank'>
+          <Typography variant='body2' sx={{ color: 'text.primary' }}>
+            {params.row.shopId}
+          </Typography>
+        </Link>
       )
     },
     {
