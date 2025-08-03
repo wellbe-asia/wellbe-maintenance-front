@@ -1,0 +1,240 @@
+@import '_base.scss';
+
+.bg_white {
+  background: #fff;
+  padding: 16px 32px;
+
+  @include mq() {
+    padding: 16px;
+  }
+}
+
+.slide_box {
+  width: 100%;
+
+  @include mq() {
+    overflow-x: scroll;
+  }
+}
+
+.week_table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-top: 1px solid #848484;
+  border-bottom: 2px solid #848484;
+  color: #555;
+  width: 100%;
+  margin: auto;
+
+  tr {
+    border-bottom: solid #848484 2px;
+
+    &:nth-child(2n) {
+      border-bottom: solid #ccc 1px;
+    }
+  }
+
+  th {
+    background-color: #f3ebe2;
+    padding: 10px 4px 10px 4px;
+    text-align: left;
+    font-weight: bold;
+    border-right: 1px solid #848484;
+    font-size: common-text(s);
+    line-height: 1.2;
+    width: 12%;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  td {
+    border-right: 1px solid #848484;
+    padding: 10px 0 10px 0px;
+    text-align: center;
+    font-size: common-text(s);
+    background: #f3f2f0;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .sold_out {
+    background: #f3f2f0;
+    color: #555;
+
+    button {
+      background: none;
+      border: none;
+      color: #555;
+      font-weight: bold;
+      cursor: inherit;
+    }
+  }
+
+  .on_sale {
+    color: #0070bd;
+    font-weight: bold;
+
+    button {
+      background: none;
+      border: none;
+      color: #0070bd;
+      font-weight: bold;
+    }
+  }
+
+  .week_table_dow {
+    text-align: center;
+    background-color: #fff;
+  }
+
+  .right {
+    text-align: right;
+    padding-right: 6px;
+    font-size: common-text(s);
+    background-color: #f4f5fa;
+  }
+
+  .reserve {
+    background: $mx_orange;
+  }
+
+  .all_set {
+    background: #d9d9d9;
+    text-align: center;
+
+    @include mq() {
+      min-width: 90px;
+    }
+  }
+
+  .all_input {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #777;
+    border-radius: 10%;
+    padding: 4px 0 4px 0px;
+    font-size: common-text(s);
+
+    @include mq() {
+      width: 60%;
+      margin: 2px 0;
+    }
+  }
+
+  .all_input_submit {
+    margin-left: 8px;
+    background: $mx_orange;
+    font-size: common-text(ss);
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    padding: 2px 6px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @include mq() {
+      width: 60%;
+      margin: 4px auto 0 auto;
+    }
+  }
+
+  .set_count {
+    width: 40%;
+    text-align: center;
+    font-weight: bold;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #777;
+    border-radius: 10%;
+    padding: 4px 0 4px 0px;
+    font-size: common-text(s);
+  }
+
+  .week_clear {
+    background: #fff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $mx_orange;
+    font-size: 10px;
+    width: 80%;
+    margin-top: 4px;
+    padding: 3px 0;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .active_ceil {
+    background-color: $mx_orange;
+
+    input {
+      background: #fdf1cc;
+    }
+  }
+}
+
+.calender_h {
+  margin-left: 24px;
+}
+
+.week_table_date {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto 0px auto;
+  padding: 20px 0 20px 0;
+  width: 100%;
+  align-items: center;
+  border-top: 1px solid #848484;
+
+  &:last-of-type {
+    border-top: none;
+    border-bottom: 2px solid #848484;
+    padding: 10px 0 20px 0;
+  }
+
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0 10px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+
+    svg {
+      margin: 0 1px;
+    }
+  }
+
+  .week_table_date_day {
+    font-size: common-text(s);
+    font-weight: bold;
+  }
+}
+
+.reserve_submit {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.arrow_color_false {
+  color: rgba(58, 53, 65, 0.3);
+  cursor: default;
+}
+.arrow_color_true {
+  color: #000;
+  cursor: pointer;
+}

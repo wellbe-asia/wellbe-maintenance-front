@@ -146,7 +146,7 @@ const StoreList = () => {
       )
     },
     {
-      width: 300,
+      width: 400,
       field: 'shop_status_cd',
       headerName: 'Actions',
       renderCell: (params: GridRenderCellParams) => {
