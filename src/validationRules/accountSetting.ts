@@ -88,6 +88,10 @@ export const ValidationRules = () => {
     },
     shiftSetting: {
       required: t.MESSAGE_REQUIRED_SELECT
-    }
+    },
+    multipleSalon: {
+      required: t.MESSAGE_REQUIRED_SELECT
+    },
+    salonboardId: {}
   }
 }

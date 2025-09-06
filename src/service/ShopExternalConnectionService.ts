@@ -61,7 +61,9 @@ const ShopExternalConnectionService = () => {
       IsConfirmed: val.is_confirmed,
       ExternalConnectSiteCd: val.external_connect_site_cd,
       SalonboardType: val.salonboard_type,
-      IsConnectShiftSetting: val.is_connect_shift_setting
+      IsConnectShiftSetting: val.is_connect_shift_setting,
+      IsMultipleSalon: val.is_multiple_salon,
+      SalonboardId: val.salonboard_id
     }
   }
 
@@ -74,7 +76,9 @@ const ShopExternalConnectionService = () => {
       IsConfirmed: undefined,
       ExternalConnectSiteCd: EXTERNAL_SITE_CD.SALONBOARD,
       SalonboardType: '',
-      IsConnectShiftSetting: ''
+      IsConnectShiftSetting: '',
+      IsMultipleSalon: '',
+      SalonboardId: ''
     }
   }
 

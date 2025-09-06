@@ -1159,6 +1159,79 @@ export default function AccountSettings() {
                       }
                     </span>
                   </Grid>
+                  <Grid item xs={12}>
+                    <span className={styles.form_label}>
+                      {t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_MULTIPLE_SALON}
+                    </span>
+                    {!shopExternalConnectionService.loading ? (
+                      <Controller
+                        name={`ShopExternalConnection.IsMultipleSalon`}
+                        {...shopExternalConnectionService.ShopExternalConnectionForm}
+                        rules={validationRule.multipleSalon}
+                        render={({ field, fieldState }) => (
+                          <FormControl fullWidth>
+                            <RadioGroup
+                              value={field.value}
+                              onChange={field.onChange}
+                              aria-labelledby='salontype-radio-buttons-group-label'
+                              name='salontype-radio-buttons-group'
+                            >
+                              <FormControlLabel
+                                value={'true'}
+                                control={<Radio />}
+                                label={t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_MULTIPLE_SALON_YES}
+                              />
+                              <FormControlLabel
+                                value={'false'}
+                                control={<Radio />}
+                                label={t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_CONNECT_MULTIPLE_SALON_NO}
+                              />
+                            </RadioGroup>
+                            {fieldState.invalid && (
+                              <Typography fontSize='0.8rem' color='error'>
+                                {fieldState.error?.message}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      />
+                    ) : (
+                      <Skeleton variant='rounded' height={45} />
+                    )}
+                  </Grid>
+                  <Grid item xs={12} md={7}>
+                    <span className={styles.form_label}>
+                      {t.SCREEN_ACCOUNT_SETTING_CONNECTION_SALONBOARD_SALONBOARDID}
+                    </span>
+                    {!shopExternalConnectionService.loading ? (
+                      <Controller
+                        name={`ShopExternalConnection.SalonboardId`}
+                        {...shopExternalConnectionService.ShopExternalConnectionForm}
+                        rules={validationRule.salonboardId}
+                        render={({ field, fieldState }) => (
+                          <FormControl fullWidth>
+                            <TextField
+                              {...field}
+                              {...shopExternalConnectionService.ShopExternalConnectionForm.register(
+                                'ShopExternalConnection.SalonboardId'
+                              )}
+                              fullWidth
+                              type='text'
+                              size='small'
+                              id='account-setting-external-salonboardid'
+                              required
+                              variant='outlined'
+                              error={fieldState.invalid}
+                              helperText={fieldState.error?.message}
+                              inputProps={{ style: { fontSize: '14px' } }}
+                            />
+                          </FormControl>
+                        )}
+                      />
+                    ) : (
+                      <Skeleton variant='rounded' height={45} />
+                    )}
+                  </Grid>
                 </Grid>
                 <Grid>
                   <Box

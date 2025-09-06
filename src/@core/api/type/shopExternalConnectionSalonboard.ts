@@ -7,6 +7,8 @@ export type shopExternalConnectionSalonboardType = {
   ExternalConnectSiteCd: string
   SalonboardType: string
   IsConnectShiftSetting: string
+  IsMultipleSalon: string
+  SalonboardId: string
 }
 
 export type shopExternalConnectionSalonboardResponseType = {
@@ -24,4 +26,6 @@ export type shopExternalConnectionSalonboardResponseGetType = {
   external_connect_site_cd: string
   salonboard_type: string
   is_connect_shift_setting: string
+  is_multiple_salon: string
+  salonboard_id: string
 }
