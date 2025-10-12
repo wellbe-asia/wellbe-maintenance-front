@@ -44,11 +44,11 @@ const ShopForMaintenanceService = () => {
     }
   }
 
-  const GetShopContractedList = async (): Promise<{ message: string }> => {
+  const GetShopContractedList = async (omitAvailable: boolean): Promise<{ message: string }> => {
     try {
       setLoading(true)
       const language = getLanguageCdWithValue(locale || DEFAULT_LANGUAGE)
-      const res = await ShopAPI.getShopContractedList(language)
+      const res = await ShopAPI.getShopContractedList(language, omitAvailable)
       if (res.status != 200) {
         const message = GetMessage(
           res.status,

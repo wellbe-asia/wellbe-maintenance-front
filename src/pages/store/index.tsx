@@ -30,7 +30,7 @@ const StoreList = () => {
   const shopForMaintenanceService = ShopForMaintenanceService()
 
   useEffect(() => {
-    shopForMaintenanceService.GetShopContractedList()
+    shopForMaintenanceService.GetShopContractedList(true)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.locale])

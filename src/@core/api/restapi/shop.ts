@@ -141,10 +141,15 @@ const ShopAPI = {
       return error
     }
   },
-  getShopContractedList: async (languageCd: string): Promise<{ status: number; data: ShopResponseType }> => {
+  getShopContractedList: async (
+    languageCd: string,
+    omitAvailable: boolean
+  ): Promise<{ status: number; data: ShopResponseType }> => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/maintenance/query/shop_contracted?language_cd=${languageCd}`,
+        `${
+          process.env.NEXT_PUBLIC_SERVER_SHOP_URL
+        }/maintenance/query/shop_contracted?language_cd=${languageCd}&omit_available=${omitAvailable ? '' : '1'}`,
         {
           headers: {
             'Content-Type': 'application/json',
