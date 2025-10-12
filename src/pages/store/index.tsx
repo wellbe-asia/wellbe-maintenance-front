@@ -111,7 +111,8 @@ const StoreList = () => {
         </Typography>
       )
     },
-    {
+
+    /*     {
       width: 120,
       field: 'reservation_limit_total_day',
       headerName: t.SCREEN_COL_SHOP_LIST_RESERVATION_LIMIT_TOTAL_DAY,
@@ -130,7 +131,7 @@ const StoreList = () => {
           {params.row.shop_booking_available_day}
         </Typography>
       )
-    },
+    }, */
     {
       width: 120,
       field: 'external_connect_is_confirmed',
