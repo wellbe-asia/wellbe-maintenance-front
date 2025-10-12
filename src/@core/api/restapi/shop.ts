@@ -149,7 +149,7 @@ const ShopAPI = {
       const response = await axios.get(
         `${
           process.env.NEXT_PUBLIC_SERVER_SHOP_URL
-        }/maintenance/query/shop_contracted?language_cd=${languageCd}&omit_available=${omitAvailable ? '' : '1'}`,
+        }/maintenance/query/shop_contracted?language_cd=${languageCd}&omit_available=${omitAvailable ? '1' : ''}`,
         {
           headers: {
             'Content-Type': 'application/json',
