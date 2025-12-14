@@ -47,6 +47,28 @@ const ShopBookingAPI = {
       return error
     }
   },
+  RescheduleBooking: async (
+    bookingId: string,
+    dateOfBooking: string,
+    timeOfBooking: string
+  ): Promise<{ status: number; data: ShopBookingResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/booking/reschedule`,
+        JSON.stringify({ booking_id: bookingId, date_of_booking: dateOfBooking, time_of_booking: timeOfBooking }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
   CancelShopBookingByShop: async (
     bookingId: string,
     CancelReason: string

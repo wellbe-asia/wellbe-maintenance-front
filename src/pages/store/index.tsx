@@ -168,6 +168,11 @@ const StoreList = () => {
                 {t.BUTTON_LIMIT_SETTING}
               </Button>
             </Link>
+            <Link href={`/store-location?shop_id=${params.row.id}`} target='_blank'>
+              <Button size='small' variant='outlined' color='secondary'>
+                {t.BUTTON_STORE_LOCATION}
+              </Button>
+            </Link>
           </>
         )
       }

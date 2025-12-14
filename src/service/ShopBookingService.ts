@@ -25,6 +25,21 @@ const ShopBookingService = () => {
     return { message: '' }
   }
 
+  const Reschedule = async (
+    bookingId: string,
+    dateOfBooking: string,
+    timeOfBooking: string
+  ): Promise<{ message: string }> => {
+    const res = await ShopBookingAPI.RescheduleBooking(bookingId, dateOfBooking, timeOfBooking)
+    if (res.status != 200) {
+      const message = GetMessage(res.status, res.data?.result_code || SERVER_STATUS.SEVERERROR, res.data?.message || '')
+
+      return { message }
+    }
+
+    return { message: '' }
+  }
+
   const Cancel = async (bookingId: string, cancelReason: string): Promise<{ message: string }> => {
     const res = await ShopBookingAPI.CancelShopBookingByShop(bookingId, cancelReason)
     if (res.status != 200) {
@@ -38,6 +53,7 @@ const ShopBookingService = () => {
 
   return {
     Approve,
+    Reschedule,
     Cancel
   }
 }

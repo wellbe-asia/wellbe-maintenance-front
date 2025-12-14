@@ -69,6 +69,7 @@ export default {
   BUTTON_YES: 'Yes',
   BUTTON_NO: 'No',
   BUTTON_LIMIT_SETTING: 'Booking Limit Setting',
+  BUTTON_STORE_LOCATION: 'Store Location',
   BUTTON_INITIAL_SETTING: 'Initial Setting',
   BUTTON_AUTO_SETTING: 'Auto Setting',
   BUTTON_SETTING: 'Setting',

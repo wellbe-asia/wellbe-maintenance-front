@@ -68,6 +68,7 @@ export default {
   BUTTON_YES: 'はい',
   BUTTON_NO: 'いいえ',
   BUTTON_LIMIT_SETTING: '予約枠設定',
+  BUTTON_STORE_LOCATION: '店舗位置情報',
   BUTTON_INITIAL_SETTING: '初期設定',
   BUTTON_AUTO_SETTING: '自動設定',
   BUTTON_SETTING: '設定',
