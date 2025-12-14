@@ -67,6 +67,17 @@ export default function ShopLocationPage() {
     },
     {
       width: 200,
+      field: 'place_name',
+      headerName: 'Place Name',
+      valueGetter: params => new Date(params.value),
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.place_name}
+        </Typography>
+      )
+    },
+    {
+      width: 200,
       field: 'formatted_address',
       headerName: 'Formatted Address',
       valueGetter: params => new Date(params.value),
