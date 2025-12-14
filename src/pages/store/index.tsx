@@ -158,6 +158,11 @@ const StoreList = () => {
                 {t.BUTTON_SHOP_ACCOUNT}
               </Button>
             </Link>
+            <Link href={`/store-location?shop_id=${params.row.id}`} target='_blank'>
+              <Button size='small' variant='outlined' color='secondary' sx={{ mr: 2 }}>
+                {t.BUTTON_STORE_LOCATION}
+              </Button>
+            </Link>
             <Link href={`/store-maintenance?shop_id=${params.row.id}`} target='_blank'>
               <Button size='small' variant='outlined' color='secondary' sx={{ mr: 2 }}>
                 {t.BUTTON_SHOP_ARTICLE}
@@ -166,11 +171,6 @@ const StoreList = () => {
             <Link href={`/booking-limit?shop_id=${params.row.id}`} target='_blank'>
               <Button size='small' variant='outlined' color='secondary'>
                 {t.BUTTON_LIMIT_SETTING}
-              </Button>
-            </Link>
-            <Link href={`/store-location?shop_id=${params.row.id}`} target='_blank'>
-              <Button size='small' variant='outlined' color='secondary'>
-                {t.BUTTON_STORE_LOCATION}
               </Button>
             </Link>
           </>
