@@ -8,7 +8,7 @@ const ShopLocationGoogleAPI = {
   ): Promise<{ status: number; data: ShopLocationGoogleResponseType }> => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop_location_googles/shop_id?shop_id=${shopId}&language_cd=${languageCd}`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/shop_location_googles/shop_id?shop_id=${shopId}&language_cd=${languageCd}`,
         {
           headers: {
             Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
@@ -28,7 +28,7 @@ const ShopLocationGoogleAPI = {
   ): Promise<{ status: number; data: ShopLocationGoogleResponseType }> => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop_location_googles/filter?shop_id=${shopId}&language_cd=${languageCd}&query=${query}`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/shop_location_googles/filter?shop_id=${shopId}&language_cd=${languageCd}&query=${query}`,
         {
           headers: {
             Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
@@ -46,7 +46,7 @@ const ShopLocationGoogleAPI = {
   ): Promise<{ status: number; data: ShopLocationGoogleResponseType }> => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop_location_google/submit`,
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/shop_location_google/submit`,
         JSON.stringify({ shop_id: shopLocationGoogleType.ShopId, place_id: shopLocationGoogleType.PlaceId }),
         {
           headers: {
