@@ -2,6 +2,7 @@
 // ** React
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -93,9 +94,11 @@ export default function ShopLocationPage() {
       headerName: 'Google Map URI',
       valueGetter: params => new Date(params.value),
       renderCell: (params: GridRenderCellParams) => (
-        <Typography variant='body2' sx={{ color: 'text.primary' }}>
-          {params.row.google_map_uri}
-        </Typography>
+        <Link href={params.row.google_map_uri} target='_blank'>
+          <Typography variant='body2' sx={{ color: 'text.primary' }}>
+            {params.row.google_map_uri}
+          </Typography>
+        </Link>
       )
     },
     {
@@ -104,9 +107,11 @@ export default function ShopLocationPage() {
       headerName: 'Website URI',
       valueGetter: params => new Date(params.value),
       renderCell: (params: GridRenderCellParams) => (
-        <Typography variant='body2' sx={{ color: 'text.primary' }}>
-          {params.row.website_uri}
-        </Typography>
+        <Link href={params.row.google_map_uri} target='_blank'>
+          <Typography variant='body2' sx={{ color: 'text.primary' }}>
+            {params.row.website_uri}
+          </Typography>
+        </Link>
       )
     },
     {
