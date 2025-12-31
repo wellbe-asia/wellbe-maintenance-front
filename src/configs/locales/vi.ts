@@ -113,6 +113,7 @@ export default {
   SCREEN_COL_SHOP_LIST_RESERVATION_LIMIT_TOTAL_DAY: 'Số ngày đặt chỗ giới hạn',
   SCREEN_COL_SHOP_LIST_BOOKING_AVAILABLE_DAY: 'Số ngày đặt chỗ có sẵn',
   SCREEN_COL_SHOP_LIST_BOOKING_METHOD: 'Phương thức đặt chỗ',
+  SCREEN_COL_SHOP_LIST_EMAIL: 'Địa chỉ email',
   SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT: 'Connection of Salonboard',
   SCREEN_COL_SHOP_LIST_STATUS: 'Trạng thái',
   SCREEN_COL_SHOP_LIST_DETAIL: 'Chi tiết',

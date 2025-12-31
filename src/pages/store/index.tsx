@@ -111,6 +111,16 @@ const StoreList = () => {
         </Typography>
       )
     },
+    {
+      width: 250,
+      field: 'shop_admin_email_address',
+      headerName: t.SCREEN_COL_SHOP_LIST_EMAIL,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.shop_admin_email_address}
+        </Typography>
+      )
+    },
 
     /*     {
       width: 120,
