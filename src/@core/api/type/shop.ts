@@ -60,6 +60,35 @@ export type ShopResponseGetType = {
   transition_last_month: number
   reservation_limit_total_day: number
   shop_booking_available_day: number
+  shop_location_googles: ShopLocationGoogleResponseGetType[]
+}
+
+
+export type ShopLocationGoogleResponseGetType = {
+  id: string
+  language_cd: number
+  shop_id: string
+  place_name: string
+  place_id: string
+  formatted_address: string
+  short_formatted_address: string
+  address_postal_code: string
+  address_country: string
+  address_administrative_area1: string
+  address_administrative_area2: string
+  locality: string
+  sublocality_level_2: string
+  sublocality_level_3: string
+  sublocality_level_4: string
+  premise: string
+  latitude: string
+  longitude: string
+  google_map_uri: string
+  website_uri: string
+  create_datetime: string
+  create_function: string
+  update_datetime: string
+  update_function: string
 }
 
 export type ShopAdminPicResponseGetType = {

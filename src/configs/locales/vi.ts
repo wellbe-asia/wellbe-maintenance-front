@@ -115,6 +115,7 @@ export default {
   SCREEN_COL_SHOP_LIST_BOOKING_METHOD: 'Phương thức đặt chỗ',
   SCREEN_COL_SHOP_LIST_EMAIL: 'Địa chỉ email',
   SCREEN_COL_SHOP_LIST_SALONBOARD_CONNECT: 'Connection of Salonboard',
+  SCREEN_COL_SHOP_LIST_SHOP_LOCATION_GOOGLES: 'Vị trí cửa hàng (Google)',
   SCREEN_COL_SHOP_LIST_STATUS: 'Trạng thái',
   SCREEN_COL_SHOP_LIST_DETAIL: 'Chi tiết',
   SCREEN_COL_SHOP_LIST_APPROVE: 'Chấp thuận',

@@ -157,6 +157,16 @@ const StoreList = () => {
       )
     },
     {
+      width: 250,
+      field: 'shop_location_googles',
+      headerName: t.SCREEN_COL_SHOP_LIST_SHOP_LOCATION_GOOGLES,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+          {params.row.shop_location_googles && params.row.shop_location_googles.length > 0 ? '設定済' : '未設定'}
+        </Typography>
+      )
+    },
+    {
       width: 400,
       field: 'shop_status_cd',
       headerName: 'Actions',
