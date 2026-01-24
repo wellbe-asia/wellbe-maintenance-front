@@ -78,7 +78,7 @@ export default function ShopLocationPage() {
       )
     },
     {
-      width: 200,
+      width: 400,
       field: 'formatted_address',
       headerName: 'Formatted Address',
       valueGetter: params => new Date(params.value),
