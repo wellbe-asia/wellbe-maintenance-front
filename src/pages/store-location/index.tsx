@@ -171,7 +171,7 @@ export default function ShopLocationPage() {
             </Grid>
             <Grid item xs={12}>
               <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
-              <Button variant='contained' onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
+                <Button variant='contained' onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
                   {t.BUTTON_SEARCH_AGAIN}
                 </Button>
               </Box>
