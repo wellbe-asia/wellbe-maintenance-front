@@ -8,6 +8,8 @@ import Link from 'next/link'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
 import { Alert, AlertColor, Backdrop, CircularProgress, Snackbar } from '@mui/material'
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRenderCellParams } from '@mui/x-data-grid'
 
@@ -27,6 +29,7 @@ export default function ShopLocationPage() {
   const [severity, setSeverity] = useState<AlertColor>('error')
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [hideNameColumn, setHideNameColumn] = useState<GridColumnVisibilityModel>({ full_name: true })
+  const [searchQuery, setSearchQuery] = useState('')
 
   const { shop_id } = router.query
   const shopId = shop_id && [shop_id].flat(1).length > 0 ? [shop_id].flat(1)[0] : ''
@@ -52,6 +55,16 @@ export default function ShopLocationPage() {
 
   const handleClose = () => {
     setSnackbarOpen(false)
+  }
+
+  const handleSearch = async () => {
+    const languageCd = getLanguageCdWithValue(locale || '')
+    const res = await shopLocationGoogleService.GetFromGoogleWithFilter(shopId, languageCd, searchQuery)
+    if (res.message != '') {
+      setSnackbarOpen(true)
+      setMessage(res.message)
+      setSeverity('error')
+    }
   }
 
   const columns: GridColDef[] = [
@@ -138,6 +151,22 @@ export default function ShopLocationPage() {
 
   return (
     <Card>
+      <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+        <TextField
+          fullWidth
+          placeholder={t.PLACEHOLDER_STORE_LOCATION_SEARCH}
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              handleSearch()
+            }
+          }}
+        />
+        <Button variant='contained' onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
+          {t.BUTTON_SEARCH_AGAIN}
+        </Button>
+      </Box>
       <DataGrid
         autoHeight
         slots={{ toolbar: ExportToolbar }}

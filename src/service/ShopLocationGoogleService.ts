@@ -51,9 +51,11 @@ const ShopLocationGoogleService = () => {
           res.data?.result_code || SERVER_STATUS.SEVERERROR,
           res.data?.message || ''
         )
+        setShopLocationGoogleList([])
 
         return { message }
       }
+      setShopLocationGoogleList(res.data?.shop_location_googles || [])
 
       return { message: '' }
     } finally {
