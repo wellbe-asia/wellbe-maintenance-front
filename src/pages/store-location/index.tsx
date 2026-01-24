@@ -154,7 +154,7 @@ export default function ShopLocationPage() {
       <CardActionArea>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+            <Box sx={{ pl: 3, pr: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
               <TextField
                 placeholder={t.PLACEHOLDER_STORE_LOCATION_SEARCH}
                 value={searchQuery}
@@ -170,7 +170,7 @@ export default function ShopLocationPage() {
             </Box>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+              <Box sx={{ pl: 3, pr: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
                 <Button variant='contained' size='small' fullWidth onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
                   {t.BUTTON_SEARCH_AGAIN}
                 </Button>
