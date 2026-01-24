@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
-import { Alert, AlertColor, Backdrop, CircularProgress, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Backdrop, CardActionArea, CircularProgress, Grid, Snackbar } from '@mui/material'
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRenderCellParams } from '@mui/x-data-grid'
 
 // ** Component
@@ -151,22 +151,33 @@ export default function ShopLocationPage() {
 
   return (
     <Card>
-      <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
-        <TextField
-          fullWidth
-          placeholder={t.PLACEHOLDER_STORE_LOCATION_SEARCH}
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === 'Enter') {
-              handleSearch()
-            }
-          }}
-        />
-        <Button variant='contained' onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
-          {t.BUTTON_SEARCH_AGAIN}
-        </Button>
-      </Box>
+      <CardActionArea>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+              <TextField
+                placeholder={t.PLACEHOLDER_STORE_LOCATION_SEARCH}
+                value={searchQuery}
+                size='small'
+                fullWidth
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    handleSearch()
+                  }
+                }}
+              />
+            </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ p: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+              <Button variant='contained' onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
+                  {t.BUTTON_SEARCH_AGAIN}
+                </Button>
+              </Box>
+          </Grid>
+        </Grid>
+      </CardActionArea>
       <DataGrid
         autoHeight
         slots={{ toolbar: ExportToolbar }}
