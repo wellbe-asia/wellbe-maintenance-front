@@ -80,7 +80,7 @@ export default function ShopLocationPage() {
       )
     },
     {
-      width: 200,
+      width: 250,
       field: 'place_name',
       headerName: 'Place Name',
       valueGetter: params => new Date(params.value),
@@ -91,7 +91,7 @@ export default function ShopLocationPage() {
       )
     },
     {
-      width: 400,
+      width: 500,
       field: 'formatted_address',
       headerName: 'Formatted Address',
       valueGetter: params => new Date(params.value),
