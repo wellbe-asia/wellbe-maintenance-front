@@ -29,7 +29,9 @@ const ShopLocationGoogleService = () => {
 
         return { message }
       }
-      setShopLocationGoogleList(res.data?.shop_location_googles || [])
+
+      // idにplace_idを設定, それ以外はそのまま設定
+      setShopLocationGoogleList(res.data?.shop_location_googles?.map(item => ({ ...item, id: item.place_id })) || [])
 
       return { message: '' }
     } finally {
@@ -55,7 +57,7 @@ const ShopLocationGoogleService = () => {
 
         return { message }
       }
-      setShopLocationGoogleList(res.data?.shop_location_googles || [])
+      setShopLocationGoogleList(res.data?.shop_location_googles?.map(item => ({ ...item, id: item.place_id })) || [])
 
       return { message: '' }
     } finally {
