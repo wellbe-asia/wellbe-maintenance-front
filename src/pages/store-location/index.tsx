@@ -168,13 +168,19 @@ export default function ShopLocationPage() {
                 }}
               />
             </Box>
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Box sx={{ pl: 3, pr: 3, pt: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
-                <Button variant='contained' size='small' fullWidth onClick={handleSearch} disabled={shopLocationGoogleService.loading}>
-                  {t.BUTTON_SEARCH_AGAIN}
-                </Button>
-              </Box>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Box sx={{ pl: 3, pr: 3, pt: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
+              <Button
+                variant='contained'
+                size='small'
+                fullWidth
+                onClick={handleSearch}
+                disabled={shopLocationGoogleService.loading}
+              >
+                {t.BUTTON_SEARCH_AGAIN}
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </CardActionArea>
