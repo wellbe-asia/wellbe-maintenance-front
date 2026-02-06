@@ -70,7 +70,7 @@ export default function ShopLocationPage() {
   const columns: GridColDef[] = [
     {
       width: 100,
-      field: 'place_id',
+      field: 'id',
       headerName: 'Place ID',
       valueGetter: params => new Date(params.value),
       renderCell: (params: GridRenderCellParams) => (
