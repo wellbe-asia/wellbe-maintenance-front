@@ -1,5 +1,5 @@
 import axios from '@/@core/api/BaseAxios'
-import { BookingResponseType } from '../type/booking'
+import { BookingEventsResponseType, BookingResponseType } from '../type/booking'
 
 const BookingApi = {
   GetBookingBookingNo: async (
@@ -43,6 +43,25 @@ const BookingApi = {
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_BOOKING_URL}/query/booking/maintenance/proxy?language_cd=${languageCd}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_BOOKING_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  GetBookingEventsByBookingId: async (
+    bookingId: string
+  ): Promise<{ status: number; data: BookingEventsResponseType }> => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_BOOKING_URL}/query/booking_events/booking_id?booking_id=${bookingId}`,
         {
           headers: {
             'Content-Type': 'application/json',

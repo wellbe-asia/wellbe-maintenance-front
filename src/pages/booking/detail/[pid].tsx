@@ -1,5 +1,19 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper
+} from '@mui/material'
 
 // ** css
 import styles from 'styles/booking.module.scss'
@@ -7,12 +21,15 @@ import styles from 'styles/booking.module.scss'
 // ** service
 import BookingService from '@/service/BookingService'
 
+// ** API
+import BookingAPI from '@/@core/api/factoryBooking'
+import { BookingEventType } from '@/@core/api/type/booking'
+
 // ** hook
 import { useLocale } from 'src/@core/hooks/useLocal'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getLanguageCdWithValue } from '@/configs/locales/locales'
-import { Skeleton } from '@mui/material'
 import ListErrors from '@/@core/components/list-errors'
 import WellbeAccountService from '@/service/WellbeAccountService'
 
@@ -23,10 +40,46 @@ export default function BookingDetail() {
     [router.query.pid].flat(1).length > 0 ? [router.query.pid].flat(1)[0] : ''
   )
   const [errors, setErrors] = useState<string[]>([])
+  const [bookingEvents, setBookingEvents] = useState<BookingEventType[]>([])
+  const [eventsLoading, setEventsLoading] = useState(false)
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false)
+  const [selectedEventDetail, setSelectedEventDetail] = useState<string>('')
 
   // Service
   const bookingService = BookingService()
   const wellbeAccountService = WellbeAccountService()
+
+  const fetchBookingEvents = useCallback(async (bookingId: string) => {
+    setEventsLoading(true)
+    try {
+      const res = await BookingAPI.GetBookingEventsByBookingId(bookingId)
+      if (res?.data?.result_code === 0 && res.data.booking_events) {
+        setBookingEvents(res.data.booking_events)
+      } else {
+        setBookingEvents([])
+      }
+    } catch {
+      setBookingEvents([])
+    } finally {
+      setEventsLoading(false)
+    }
+  }, [])
+
+  const openDetailDialog = (eventDetail: string) => {
+    setSelectedEventDetail(eventDetail)
+    setDetailDialogOpen(true)
+  }
+
+  const formatDetailForDisplay = (raw: string): string => {
+    if (!raw) return ''
+    try {
+      const parsed = JSON.parse(raw)
+
+      return JSON.stringify(parsed, null, 2)
+    } catch {
+      return raw
+    }
+  }
 
   useEffect(() => {
     if ([router.query.pid].flat(1).length > 0) {
@@ -43,6 +96,15 @@ export default function BookingDetail() {
     // Only first time
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.locale, bookingNo])
+
+  useEffect(() => {
+    const bookingId = bookingService.bookings?.[0]?.id
+    if (bookingId) {
+      fetchBookingEvents(bookingId)
+    } else {
+      setBookingEvents([])
+    }
+  }, [bookingService.bookings, fetchBookingEvents])
 
   // get Booking
   const GetBooking = async (inBookingNo: string, languageCd: string) => {
@@ -239,6 +301,77 @@ export default function BookingDetail() {
             </Box>
           </Box>
         </Box>
+
+        {/* 予約の変更履歴 */}
+        {bookingService.bookings && bookingService.bookings.length > 0 && (
+          <Box sx={{ maxWidth: '1000px', margin: '24px auto 0', paddingBottom: 3 }}>
+            <h3 style={{ marginBottom: 16 }}>{t.SCREEN_TITLE_BOOKING_EVENTS}</h3>
+            {eventsLoading ? (
+              <Skeleton variant="rectangular" height={120} />
+            ) : bookingEvents.length === 0 ? (
+              <Box sx={{ py: 2, color: 'text.secondary' }}>—</Box>
+            ) : (
+              <TableContainer component={Paper} variant="outlined">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{t.SCREEN_COL_BOOKING_EVENT_DATETIME}</TableCell>
+                      <TableCell>{t.SCREEN_COL_BOOKING_EVENT_TITLE}</TableCell>
+                      <TableCell>{t.SCREEN_COL_BOOKING_EVENT_SUMMARY}</TableCell>
+                      <TableCell>{t.SCREEN_COL_BOOKING_EVENT_FUNCTION_NAME}</TableCell>
+                      <TableCell align="right">{t.BUTTON_DETAIL}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {bookingEvents.map(row => (
+                      <TableRow key={row.id}>
+                        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.create_datetime}</TableCell>
+                        <TableCell>{row.event_title}</TableCell>
+                        <TableCell sx={{ maxWidth: 280 }}>{row.event_summary}</TableCell>
+                        <TableCell>{row.function_name}</TableCell>
+                        <TableCell align="right">
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => openDetailDialog(row.event_detail)}
+                          >
+                            {t.BUTTON_DETAIL}
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </Box>
+        )}
+
+        <Dialog
+          open={detailDialogOpen}
+          onClose={() => setDetailDialogOpen(false)}
+          maxWidth="md"
+          fullWidth
+          PaperProps={{ sx: { minHeight: '50vh' } }}
+        >
+          <DialogTitle>{t.BUTTON_DETAIL}</DialogTitle>
+          <DialogContent>
+            <Box
+              component="pre"
+              sx={{
+                p: 2,
+                bgcolor: 'grey.100',
+                borderRadius: 1,
+                overflow: 'auto',
+                fontSize: '0.8rem',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all'
+              }}
+            >
+              {formatDetailForDisplay(selectedEventDetail)}
+            </Box>
+          </DialogContent>
+        </Dialog>
       </Box>
     </>
   )

@@ -217,3 +217,22 @@ export type BookingMenuResponseGetType = {
   number_of_female: number
   number_of_male: number
 }
+
+export type BookingEventType = {
+  id: string
+  booking_id: string
+  event_title: string
+  event_summary: string
+  event_detail: string
+  function_name: string
+  create_datetime: string
+  create_function: string
+  update_datetime: string
+  update_function: string
+}
+
+export type BookingEventsResponseType = {
+  result_code: number
+  message: string
+  booking_events?: BookingEventType[]
+}
