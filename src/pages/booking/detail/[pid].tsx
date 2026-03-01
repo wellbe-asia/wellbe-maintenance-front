@@ -100,8 +100,7 @@ export default function BookingDetail() {
 
   const onApprove = async () => {
     const booking = bookingService.bookings?.[0]
-    const firstCandidate = booking?.firstPriorityRequestCandidates?.[0]
-    if (!booking?.id || !firstCandidate) {
+    if (!booking?.id || !booking.dateOfBooking || !booking.timeOfBooking) {
       setApprovalErrorMessage(t.MESSAGE_REQUIRED_TEXTFIELD)
 
       return
@@ -111,8 +110,8 @@ export default function BookingDetail() {
       setApprovalErrorMessage('')
       const res = await shopBookingService.Approve(
         booking.id,
-        firstCandidate.bookingRequestDate,
-        firstCandidate.bookingRequestTimeStart
+        booking.dateOfBooking,
+        booking.timeOfBooking
       )
       if (res.message) {
         setApprovalErrorMessage(res.message)
