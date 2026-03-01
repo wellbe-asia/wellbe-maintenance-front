@@ -250,6 +250,10 @@ export default function BookingDetail() {
       <Box>
         <Box sx={{ maxWidth: '1000px', margin: '0 auto 20px auto', display: 'flex', alignItems: 'center', gap: 2 }}>
           <h2 style={{ margin: 0, flex: 1 }}>{t.SCREEN_ACCOUNT_RESERVATION_DETAILS}</h2>
+        </Box>
+        <ListErrors errors={errors} setErrors={setErrors} />
+        <Box className={styles.account_wrapper_gray_flex}>
+          <Box className={styles.account_flex_wrapper_left}>
           {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button variant="contained" color="primary" onClick={openApprovalDialog}>
@@ -265,10 +269,6 @@ export default function BookingDetail() {
               {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
             </Button>
           )}
-        </Box>
-        <ListErrors errors={errors} setErrors={setErrors} />
-        <Box className={styles.account_wrapper_gray_flex}>
-          <Box className={styles.account_flex_wrapper_left}>
             <Box className={styles.reserve_conf_box}>
               {bookingService.bookings && bookingService.bookings.length > 0 && (
                 <>
