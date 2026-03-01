@@ -57,6 +57,10 @@ export default function BookingDetail() {
   const [approvalErrorMessage, setApprovalErrorMessage] = useState('')
   const [cancelErrorMessage, setCancelErrorMessage] = useState('')
   const [actionLoading, setActionLoading] = useState(false)
+  const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
+  const [newDateOfBooking, setNewDateOfBooking] = useState('')
+  const [newTimeOfBooking, setNewTimeOfBooking] = useState('')
+  const [rescheduleErrorMessage, setRescheduleErrorMessage] = useState('')
 
   // Service
   const bookingService = BookingService()
@@ -137,6 +141,50 @@ export default function BookingDetail() {
     }
   }
 
+  const openRescheduleDialog = () => {
+    const booking = bookingService.bookings?.[0]
+    if (booking) {
+      const dateForInput =
+        booking.dateOfBooking?.length === 8
+          ? `${booking.dateOfBooking.slice(0, 4)}-${booking.dateOfBooking.slice(4, 6)}-${booking.dateOfBooking.slice(6, 8)}`
+          : ''
+      setNewDateOfBooking(dateForInput)
+      setNewTimeOfBooking(booking.timeOfBooking || '')
+    }
+    setRescheduleErrorMessage('')
+    setRescheduleDialogOpen(true)
+  }
+
+  const onReschedule = async () => {
+    try {
+      setActionLoading(true)
+      setRescheduleErrorMessage('')
+      if (!newDateOfBooking || !newTimeOfBooking) {
+        setRescheduleErrorMessage(t.MESSAGE_REQUIRED_TEXTFIELD)
+
+        return
+      }
+      const bookingId = bookingService.bookings?.[0]?.id
+      if (!bookingId) {
+        return
+      }
+      const dateOfBooking = newDateOfBooking.replace(/-/g, '')
+      const res = await shopBookingService.Reschedule(bookingId, dateOfBooking, newTimeOfBooking)
+      if (res.message) {
+        setRescheduleErrorMessage(res.message)
+
+        return
+      }
+      const varLanguageCd = getLanguageCdWithValue(router.locale || DEFAULT_LANGUAGE)
+      if (varLanguageCd && bookingNo) {
+        GetBooking(bookingNo, varLanguageCd)
+      }
+      setRescheduleDialogOpen(false)
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
   const formatDetailForDisplay = (raw: string): string => {
     if (!raw) return ''
     try {
@@ -197,6 +245,11 @@ export default function BookingDetail() {
                 {t.BUTTON_CANCEL}
               </Button>
             </Box>
+          )}
+          {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.FIXED && (
+            <Button variant="contained" color="primary" onClick={openRescheduleDialog}>
+              {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
+            </Button>
           )}
         </Box>
         <ListErrors errors={errors} setErrors={setErrors} />
@@ -572,6 +625,69 @@ export default function BookingDetail() {
                   onClick={onCancel}
                 >
                   {t.SCREEN_COL_BOOKING_CANCEL_MODAL_CONFIRM}
+                </Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={rescheduleDialogOpen} onClose={() => setRescheduleDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>{t.SCREEN_RESCHEDULE_DIALOG_TITLE}</DialogTitle>
+          <DialogContent>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+              <Box>
+                <DialogContentText sx={{ mb: 1 }}>{t.SCREEN_RESCHEDULE_CURRENT_DATETIME}</DialogContentText>
+                <TextField
+                  fullWidth
+                  value={
+                    bookingService.bookings?.[0]
+                      ? (bookingService.bookings[0].dateOfBooking
+                          ? dateFormatApi2DisplayYYYYMMDD(bookingService.bookings[0].dateOfBooking) + ' ' : '') +
+                        (bookingService.bookings[0].timeOfBooking || '')
+                      : ''
+                  }
+                  disabled
+                  variant="outlined"
+                  size="small"
+                  InputProps={{ readOnly: true }}
+                />
+              </Box>
+              <Box>
+                <DialogContentText sx={{ mb: 1 }}>{t.SCREEN_RESCHEDULE_NEW_DATETIME}</DialogContentText>
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  <TextField
+                    label=""
+                    type="date"
+                    value={newDateOfBooking}
+                    onChange={e => setNewDateOfBooking(e.target.value)}
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{ 'data-testid': 'reschedule-date' }}
+                    size="small"
+                    sx={{ minWidth: 140 }}
+                  />
+                  <TextField
+                    label=""
+                    type="time"
+                    value={newTimeOfBooking}
+                    onChange={e => setNewTimeOfBooking(e.target.value)}
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{ step: 300, 'data-testid': 'reschedule-time' }}
+                    size="small"
+                    sx={{ minWidth: 100 }}
+                  />
+                </Box>
+              </Box>
+              <Typography variant="subtitle1" color="error">
+                {rescheduleErrorMessage}
+              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={actionLoading}
+                  onClick={onReschedule}
+                >
+                  {t.SCREEN_RESCHEDULE_CONFIRM}
                 </Button>
               </Box>
             </Box>
