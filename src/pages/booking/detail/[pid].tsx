@@ -108,11 +108,7 @@ export default function BookingDetail() {
     try {
       setActionLoading(true)
       setApprovalErrorMessage('')
-      const res = await shopBookingService.Approve(
-        booking.id,
-        booking.dateOfBooking,
-        booking.timeOfBooking
-      )
+      const res = await shopBookingService.Approve(booking.id, booking.dateOfBooking, booking.timeOfBooking)
       if (res.message) {
         setApprovalErrorMessage(res.message)
       } else {
@@ -160,7 +156,10 @@ export default function BookingDetail() {
     if (booking) {
       const dateForInput =
         booking.dateOfBooking?.length === 8
-          ? `${booking.dateOfBooking.slice(0, 4)}-${booking.dateOfBooking.slice(4, 6)}-${booking.dateOfBooking.slice(6, 8)}`
+          ? `${booking.dateOfBooking.slice(0, 4)}-${booking.dateOfBooking.slice(4, 6)}-${booking.dateOfBooking.slice(
+              6,
+              8
+            )}`
           : ''
       setNewDateOfBooking(dateForInput)
       setNewTimeOfBooking(booking.timeOfBooking || '')
@@ -254,21 +253,21 @@ export default function BookingDetail() {
         <ListErrors errors={errors} setErrors={setErrors} />
         <Box className={styles.account_wrapper_gray_flex}>
           <Box className={styles.account_flex_wrapper_left}>
-          {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Button variant="contained" color="primary" onClick={openApprovalDialog}>
-                {t.BUTTON_APPROVE}
+            {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button variant='contained' color='primary' onClick={openApprovalDialog}>
+                  {t.BUTTON_APPROVE}
+                </Button>
+                <Button variant='outlined' color='error' onClick={openCancelDialog}>
+                  {t.BUTTON_CANCEL}
+                </Button>
+              </Box>
+            )}
+            {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.FIXED && (
+              <Button variant='contained' color='primary' onClick={openRescheduleDialog}>
+                {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
               </Button>
-              <Button variant="outlined" color="error" onClick={openCancelDialog}>
-                {t.BUTTON_CANCEL}
-              </Button>
-            </Box>
-          )}
-          {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.FIXED && (
-            <Button variant="contained" color="primary" onClick={openRescheduleDialog}>
-              {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
-            </Button>
-          )}
+            )}
             <Box className={styles.reserve_conf_box}>
               {bookingService.bookings && bookingService.bookings.length > 0 && (
                 <>
@@ -453,19 +452,19 @@ export default function BookingDetail() {
           <Box sx={{ maxWidth: '1000px', margin: '24px auto 0', paddingBottom: 3 }}>
             <h3 style={{ marginBottom: 16 }}>{t.SCREEN_TITLE_BOOKING_EVENTS}</h3>
             {eventsLoading ? (
-              <Skeleton variant="rectangular" height={120} />
+              <Skeleton variant='rectangular' height={120} />
             ) : bookingEvents.length === 0 ? (
               <Box sx={{ py: 2, color: 'text.secondary' }}>—</Box>
             ) : (
-              <TableContainer component={Paper} variant="outlined">
-                <Table size="small">
+              <TableContainer component={Paper} variant='outlined'>
+                <Table size='small'>
                   <TableHead>
                     <TableRow>
                       <TableCell>{t.SCREEN_COL_BOOKING_EVENT_DATETIME}</TableCell>
                       <TableCell>{t.SCREEN_COL_BOOKING_EVENT_TITLE}</TableCell>
                       <TableCell>{t.SCREEN_COL_BOOKING_EVENT_SUMMARY}</TableCell>
                       <TableCell>{t.SCREEN_COL_BOOKING_EVENT_FUNCTION_NAME}</TableCell>
-                      <TableCell align="right">{t.BUTTON_DETAIL}</TableCell>
+                      <TableCell align='right'>{t.BUTTON_DETAIL}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -475,12 +474,8 @@ export default function BookingDetail() {
                         <TableCell>{row.event_title}</TableCell>
                         <TableCell sx={{ maxWidth: 280 }}>{row.event_summary}</TableCell>
                         <TableCell>{row.function_name}</TableCell>
-                        <TableCell align="right">
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            onClick={() => openDetailDialog(row.event_detail)}
-                          >
+                        <TableCell align='right'>
+                          <Button size='small' variant='outlined' onClick={() => openDetailDialog(row.event_detail)}>
                             {t.BUTTON_DETAIL}
                           </Button>
                         </TableCell>
@@ -496,14 +491,14 @@ export default function BookingDetail() {
         <Dialog
           open={detailDialogOpen}
           onClose={() => setDetailDialogOpen(false)}
-          maxWidth="md"
+          maxWidth='md'
           fullWidth
           PaperProps={{ sx: { minHeight: '50vh' } }}
         >
           <DialogTitle>{t.BUTTON_DETAIL}</DialogTitle>
           <DialogContent>
             <Box
-              component="pre"
+              component='pre'
               sx={{
                 p: 2,
                 bgcolor: 'grey.100',
@@ -519,54 +514,52 @@ export default function BookingDetail() {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={approvalDialogOpen} onClose={() => setApprovalDialogOpen(false)} maxWidth="xs" fullWidth>
+        <Dialog open={approvalDialogOpen} onClose={() => setApprovalDialogOpen(false)} maxWidth='xs' fullWidth>
           <DialogTitle>{t.SCREEN_APPROVE_DIALOG_TITLE}</DialogTitle>
           <DialogContent>
-            <DialogContentText sx={{ mb: 2 }}>
-              {t.SCREEN_COL_BOOKING_SELECT_CANDIDATES}
-            </DialogContentText>
-            <Typography variant="subtitle1" color="error" sx={{ mb: 2 }}>
+            <DialogContentText sx={{ mb: 2 }}>{t.SCREEN_COL_BOOKING_SELECT_CANDIDATES}</DialogContentText>
+            <Typography variant='subtitle1' color='error' sx={{ mb: 2 }}>
               {approvalErrorMessage}
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-              <Button variant="outlined" onClick={() => setApprovalDialogOpen(false)} disabled={actionLoading}>
+              <Button variant='outlined' onClick={() => setApprovalDialogOpen(false)} disabled={actionLoading}>
                 {t.SCREEN_BUTTON_CLOSE_DIALOG}
               </Button>
-              <Button variant="contained" color="primary" onClick={onApprove} disabled={actionLoading}>
+              <Button variant='contained' color='primary' onClick={onApprove} disabled={actionLoading}>
                 {t.SCREEN_APPROVE_DIALOG_CONFIRM}
               </Button>
             </Box>
           </DialogContent>
         </Dialog>
 
-        <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)} maxWidth="sm" fullWidth>
+        <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)} maxWidth='sm' fullWidth>
           <DialogTitle>{t.SCREEN_CANCEL_DIALOG_TITLE}</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mb: 2 }}>{t.SCREEN_COL_BOOKING_CANCEL_MODAL_LEAD}</DialogContentText>
             <TextField
               autoFocus
-              margin="dense"
+              margin='dense'
               required
-              id="cancel-reason"
+              id='cancel-reason'
               label={t.SCREEN_COL_BOOKING_CANCEL_MODAL_REASON}
-              type="text"
+              type='text'
               fullWidth
               value={cancelReason}
               onChange={e => setCancelReason(e.target.value)}
-              variant="standard"
+              variant='standard'
             />
-            <Typography variant="subtitle1" color="error" sx={{ mt: 1 }}>
+            <Typography variant='subtitle1' color='error' sx={{ mt: 1 }}>
               {cancelErrorMessage}
             </Typography>
             <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row-reverse', mt: 2 }}>
-              <Button color="error" variant="contained" disabled={actionLoading} onClick={onCancel}>
+              <Button color='error' variant='contained' disabled={actionLoading} onClick={onCancel}>
                 {t.SCREEN_COL_BOOKING_CANCEL_MODAL_CONFIRM}
               </Button>
             </Box>
           </DialogContent>
         </Dialog>
 
-        <Dialog open={rescheduleDialogOpen} onClose={() => setRescheduleDialogOpen(false)} maxWidth="sm" fullWidth>
+        <Dialog open={rescheduleDialogOpen} onClose={() => setRescheduleDialogOpen(false)} maxWidth='sm' fullWidth>
           <DialogTitle>{t.SCREEN_RESCHEDULE_DIALOG_TITLE}</DialogTitle>
           <DialogContent>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
@@ -577,13 +570,13 @@ export default function BookingDetail() {
                   value={
                     bookingService.bookings?.[0]
                       ? (bookingService.bookings[0].dateOfBooking
-                          ? dateFormatApi2DisplayYYYYMMDD(bookingService.bookings[0].dateOfBooking) + ' ' : '') +
-                        (bookingService.bookings[0].timeOfBooking || '')
+                          ? dateFormatApi2DisplayYYYYMMDD(bookingService.bookings[0].dateOfBooking) + ' '
+                          : '') + (bookingService.bookings[0].timeOfBooking || '')
                       : ''
                   }
                   disabled
-                  variant="outlined"
-                  size="small"
+                  variant='outlined'
+                  size='small'
                   InputProps={{ readOnly: true }}
                 />
               </Box>
@@ -591,37 +584,32 @@ export default function BookingDetail() {
                 <DialogContentText sx={{ mb: 1 }}>{t.SCREEN_RESCHEDULE_NEW_DATETIME}</DialogContentText>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <TextField
-                    label=""
-                    type="date"
+                    label=''
+                    type='date'
                     value={newDateOfBooking}
                     onChange={e => setNewDateOfBooking(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                     inputProps={{ 'data-testid': 'reschedule-date' }}
-                    size="small"
+                    size='small'
                     sx={{ minWidth: 140 }}
                   />
                   <TextField
-                    label=""
-                    type="time"
+                    label=''
+                    type='time'
                     value={newTimeOfBooking}
                     onChange={e => setNewTimeOfBooking(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                     inputProps={{ step: 300, 'data-testid': 'reschedule-time' }}
-                    size="small"
+                    size='small'
                     sx={{ minWidth: 100 }}
                   />
                 </Box>
               </Box>
-              <Typography variant="subtitle1" color="error">
+              <Typography variant='subtitle1' color='error'>
                 {rescheduleErrorMessage}
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={actionLoading}
-                  onClick={onReschedule}
-                >
+                <Button variant='contained' color='primary' disabled={actionLoading} onClick={onReschedule}>
                   {t.SCREEN_RESCHEDULE_CONFIRM}
                 </Button>
               </Box>
