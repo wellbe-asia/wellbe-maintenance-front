@@ -517,7 +517,6 @@ export default function BookingDetail() {
         <Dialog open={approvalDialogOpen} onClose={() => setApprovalDialogOpen(false)} maxWidth='xs' fullWidth>
           <DialogTitle>{t.SCREEN_APPROVE_DIALOG_TITLE}</DialogTitle>
           <DialogContent>
-            <DialogContentText sx={{ mb: 2 }}>{t.SCREEN_COL_BOOKING_SELECT_CANDIDATES}</DialogContentText>
             <Typography variant='subtitle1' color='error' sx={{ mb: 2 }}>
               {approvalErrorMessage}
             </Typography>
