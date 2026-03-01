@@ -4,7 +4,11 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogContentText,
   DialogTitle,
+  Divider,
+  Grid,
+  Paper,
   Skeleton,
   Table,
   TableBody,
@@ -12,7 +16,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  TextField,
+  Typography
 } from '@mui/material'
 
 // ** css
@@ -32,6 +37,9 @@ import { useRouter } from 'next/router'
 import { getLanguageCdWithValue } from '@/configs/locales/locales'
 import ListErrors from '@/@core/components/list-errors'
 import WellbeAccountService from '@/service/WellbeAccountService'
+import ShopBookingService from '@/service/ShopBookingService'
+import { BOOKING_STATUS, DEFAULT_LANGUAGE } from '@/@core/utils/constant'
+import { dateFormatApi2DisplayYYYYMMDD } from '@/@core/utils/date'
 
 export default function BookingDetail() {
   const { t } = useLocale()
@@ -44,10 +52,16 @@ export default function BookingDetail() {
   const [eventsLoading, setEventsLoading] = useState(false)
   const [detailDialogOpen, setDetailDialogOpen] = useState(false)
   const [selectedEventDetail, setSelectedEventDetail] = useState<string>('')
+  const [actionDialogOpen, setActionDialogOpen] = useState(false)
+  const [cancelReason, setCancelReason] = useState('')
+  const [approvalErrorMessage, setApprovalErrorMessage] = useState('')
+  const [cancelErrorMessage, setCancelErrorMessage] = useState('')
+  const [actionLoading, setActionLoading] = useState(false)
 
   // Service
   const bookingService = BookingService()
   const wellbeAccountService = WellbeAccountService()
+  const shopBookingService = ShopBookingService()
 
   const fetchBookingEvents = useCallback(async (bookingId: string) => {
     setEventsLoading(true)
@@ -68,6 +82,59 @@ export default function BookingDetail() {
   const openDetailDialog = (eventDetail: string) => {
     setSelectedEventDetail(eventDetail)
     setDetailDialogOpen(true)
+  }
+
+  const openActionDialog = () => {
+    setCancelReason('')
+    setApprovalErrorMessage('')
+    setCancelErrorMessage('')
+    setActionDialogOpen(true)
+  }
+
+  const onApproveReschedule = async (shopBookingId: string, dateOfBooking: string, timeOfBooking: string) => {
+    try {
+      setActionLoading(true)
+      const res = await shopBookingService.Approve(shopBookingId, dateOfBooking, timeOfBooking)
+      if (res.message) {
+        setApprovalErrorMessage(res.message)
+      } else {
+        const varLanguageCd = getLanguageCdWithValue(router.locale || DEFAULT_LANGUAGE)
+        if (varLanguageCd && bookingNo) {
+          GetBooking(bookingNo, varLanguageCd)
+        }
+        setActionDialogOpen(false)
+      }
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const onCancel = async () => {
+    try {
+      setActionLoading(true)
+      if (!cancelReason) {
+        setCancelErrorMessage(t.MESSAGE_REQUIRED_TEXTFIELD)
+
+        return
+      }
+      const bookingId = bookingService.bookings?.[0]?.id
+      if (!bookingId) {
+        return
+      }
+      const res = await shopBookingService.Cancel(bookingId, cancelReason)
+      if (res.message) {
+        setCancelErrorMessage(res.message)
+
+        return
+      }
+      const varLanguageCd = getLanguageCdWithValue(router.locale || DEFAULT_LANGUAGE)
+      if (varLanguageCd && bookingNo) {
+        GetBooking(bookingNo, varLanguageCd)
+      }
+      setActionDialogOpen(false)
+    } finally {
+      setActionLoading(false)
+    }
   }
 
   const formatDetailForDisplay = (raw: string): string => {
@@ -119,7 +186,19 @@ export default function BookingDetail() {
   return (
     <>
       <Box>
-        <h2 style={{ maxWidth: '1000px', margin: '0 auto 20px auto' }}>{t.SCREEN_ACCOUNT_RESERVATION_DETAILS}</h2>
+        <Box sx={{ maxWidth: '1000px', margin: '0 auto 20px auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <h2 style={{ margin: 0, flex: 1 }}>{t.SCREEN_ACCOUNT_RESERVATION_DETAILS}</h2>
+          {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button variant="contained" color="primary" onClick={openActionDialog}>
+                {t.BUTTON_APPROVE}
+              </Button>
+              <Button variant="outlined" color="error" onClick={openActionDialog}>
+                {t.BUTTON_CANCEL}
+              </Button>
+            </Box>
+          )}
+        </Box>
         <ListErrors errors={errors} setErrors={setErrors} />
         <Box className={styles.account_wrapper_gray_flex}>
           <Box className={styles.account_flex_wrapper_left}>
@@ -369,6 +448,132 @@ export default function BookingDetail() {
               }}
             >
               {formatDetailForDisplay(selectedEventDetail)}
+            </Box>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={actionDialogOpen} onClose={() => setActionDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>{t.BUTTON_CONFIRM_BOOKING_CANDIDATES}</DialogTitle>
+          <DialogContent>
+            {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
+              <>
+                <DialogContentText>{t.SCREEN_COL_BOOKING_SELECT_CANDIDATES}</DialogContentText>
+                <Box className={styles.candidates}>
+                  <Box>
+                    <Box sx={{ mt: 5 }}>{t.SCREEN_COL_BOOKING_DATE_FIRST_PRIORITY}</Box>
+                    <Grid container spacing={1}>
+                      {bookingService.bookings?.[0]?.firstPriorityRequestCandidates?.map((v, i) => (
+                        <Grid key={i} item xs={12} sm={6} md={4}>
+                          <Button
+                            variant="contained"
+                            sx={{ mr: 5 }}
+                            onClick={() =>
+                              onApproveReschedule(
+                                bookingService.bookings![0].id,
+                                v.bookingRequestDate,
+                                v.bookingRequestTimeStart
+                              )
+                            }
+                            disabled={actionLoading}
+                          >
+                            {(v.bookingRequestDate ? dateFormatApi2DisplayYYYYMMDD(v.bookingRequestDate) : '') +
+                              ' ' +
+                              v.bookingRequestTimeStart +
+                              '~' +
+                              v.bookingRequestTimeEnd}
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                  <Box>
+                    <Box sx={{ mt: 5 }}>{t.SCREEN_COL_BOOKING_DATE_SECOND_PRIORITY}</Box>
+                    <Grid container spacing={2}>
+                      {bookingService.bookings?.[0]?.secondPriorityRequestCandidates?.map((v, i) => (
+                        <Grid key={i} item xs={12} sm={6} md={4}>
+                          <Button
+                            variant="contained"
+                            sx={{ mr: 5 }}
+                            onClick={() =>
+                              onApproveReschedule(
+                                bookingService.bookings![0].id,
+                                v.bookingRequestDate,
+                                v.bookingRequestTimeStart
+                              )
+                            }
+                            disabled={actionLoading}
+                          >
+                            {(v.bookingRequestDate ? dateFormatApi2DisplayYYYYMMDD(v.bookingRequestDate) : '') +
+                              ' ' +
+                              v.bookingRequestTimeStart +
+                              '~' +
+                              v.bookingRequestTimeEnd}
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                  <Box>
+                    <Box sx={{ mt: 5 }}>{t.SCREEN_COL_BOOKING_DATE_THIRD_PRIORITY}</Box>
+                    <Grid container spacing={2}>
+                      {bookingService.bookings?.[0]?.thirdPriorityRequestCandidates?.map((v, i) => (
+                        <Grid key={i} item xs={12} sm={6} md={4}>
+                          <Button
+                            variant="contained"
+                            sx={{ mr: 5 }}
+                            disabled={actionLoading}
+                            onClick={() =>
+                              onApproveReschedule(
+                                bookingService.bookings![0].id,
+                                v.bookingRequestDate,
+                                v.bookingRequestTimeStart
+                              )
+                            }
+                          >
+                            {(v.bookingRequestDate ? dateFormatApi2DisplayYYYYMMDD(v.bookingRequestDate) : '') +
+                              ' ' +
+                              v.bookingRequestTimeStart +
+                              '~' +
+                              v.bookingRequestTimeEnd}
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                  <Typography variant="subtitle1" color="error">
+                    {approvalErrorMessage}
+                  </Typography>
+                </Box>
+              </>
+            )}
+            <Divider sx={{ mt: 5 }} />
+            <Box sx={{ mt: 2 }}>
+              <DialogContentText>{t.SCREEN_COL_BOOKING_SELECT_CANDIDATES_OR_CANCEL}</DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                required
+                id="cancel-reason"
+                label={t.SCREEN_COL_BOOKING_CANCEL_MODAL_REASON}
+                type="text"
+                fullWidth
+                value={cancelReason}
+                onChange={e => setCancelReason(e.target.value)}
+                variant="standard"
+              />
+              <Typography variant="subtitle1" color="error">
+                {cancelErrorMessage}
+              </Typography>
+              <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row-reverse', mt: 2 }}>
+                <Button
+                  color="error"
+                  variant="contained"
+                  disabled={actionLoading}
+                  onClick={onCancel}
+                >
+                  {t.SCREEN_COL_BOOKING_CANCEL_MODAL_CONFIRM}
+                </Button>
+              </Box>
             </Box>
           </DialogContent>
         </Dialog>
