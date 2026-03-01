@@ -253,21 +253,23 @@ export default function BookingDetail() {
         <ListErrors errors={errors} setErrors={setErrors} />
         <Box className={styles.account_wrapper_gray_flex}>
           <Box className={styles.account_flex_wrapper_left}>
-            {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                <Button variant='contained' color='primary' onClick={openApprovalDialog}>
-                  {t.BUTTON_APPROVE}
+            <Box sx={{ marginBottom: 2, display: 'flex', justifyContent: 'flex-end' }}>
+              {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.REQUEST && (
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button variant='contained' color='primary' onClick={openApprovalDialog}>
+                    {t.BUTTON_APPROVE}
+                  </Button>
+                  <Button variant='outlined' color='error' onClick={openCancelDialog}>
+                    {t.BUTTON_CANCEL}
+                  </Button>
+                </Box>
+              )}
+              {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.FIXED && (
+                <Button variant='contained' color='primary' onClick={openRescheduleDialog}>
+                  {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
                 </Button>
-                <Button variant='outlined' color='error' onClick={openCancelDialog}>
-                  {t.BUTTON_CANCEL}
-                </Button>
-              </Box>
-            )}
-            {bookingService.bookings?.[0]?.bookingStatusCd === BOOKING_STATUS.FIXED && (
-              <Button variant='contained' color='primary' onClick={openRescheduleDialog}>
-                {t.SCREEN_BUTTON_CHANGE_BOOKING_DATETIME}
-              </Button>
-            )}
+              )}
+            </Box>
             <Box className={styles.reserve_conf_box}>
               {bookingService.bookings && bookingService.bookings.length > 0 && (
                 <>
