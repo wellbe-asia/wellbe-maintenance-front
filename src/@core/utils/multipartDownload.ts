@@ -1,18 +1,20 @@
+export type MultipartPart = { filename: string; data: Uint8Array }
+
 /**
- * Parse multipart/form-data response and trigger download for each file part.
+ * Parse multipart/form-data and return file parts (for testing).
  * Expects Content-Type like: multipart/form-data; boundary=----WebKitFormBoundary...
  */
-export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType: string): void {
+export function parseMultipart(arrayBuffer: ArrayBuffer, contentType: string): MultipartPart[] {
   const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;\s]+))/i)
-  if (!boundaryMatch) return
+  if (!boundaryMatch) return []
 
   const boundary = (boundaryMatch[1] || boundaryMatch[2] || '').trim()
   const boundaryBytes = new TextEncoder().encode(`--${boundary}`)
   const buf = new Uint8Array(arrayBuffer)
 
-  const parts: { filename: string; data: Uint8Array }[] = []
+  const parts: MultipartPart[] = []
   let start = indexOf(buf, boundaryBytes, 0)
-  if (start === -1) return
+  if (start === -1) return []
 
   while (start !== -1) {
     const nextBoundary = indexOf(buf, boundaryBytes, start + boundaryBytes.length)
@@ -24,12 +26,7 @@ export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType:
     if (headerEnd === -1) continue
 
     const headerSection = part.slice(0, headerEnd)
-    let body = part.slice(headerEnd + 4)
-
-    // パート末尾の \r\n を除去（Excel/PDF が破損と判断するのを防ぐ）
-    if (body.length >= 2 && body[body.length - 2] === 13 && body[body.length - 1] === 10) {
-      body = body.slice(0, body.length - 2)
-    }
+    const body = part.slice(headerEnd + 4)
     const headerStr = new TextDecoder('utf-8').decode(headerSection)
     const filenameMatch = headerStr.match(/filename=(?:"([^"]+)"|([^\s;]+))/i)
     if (!filenameMatch || body.length === 0) continue
@@ -37,6 +34,15 @@ export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType:
     const filename = (filenameMatch[1] || filenameMatch[2] || 'download').trim()
     parts.push({ filename, data: body })
   }
+
+  return parts
+}
+
+/**
+ * Parse multipart/form-data response and trigger download for each file part.
+ */
+export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType: string): void {
+  const parts = parseMultipart(arrayBuffer, contentType)
 
   parts.forEach(({ filename, data }) => {
     const slice = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
