@@ -24,7 +24,12 @@ export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType:
     if (headerEnd === -1) continue
 
     const headerSection = part.slice(0, headerEnd)
-    const body = part.slice(headerEnd + 4)
+    let body = part.slice(headerEnd + 4)
+
+    // パート末尾の \r\n を除去（Excel/PDF が破損と判断するのを防ぐ）
+    if (body.length >= 2 && body[body.length - 2] === 13 && body[body.length - 1] === 10) {
+      body = body.slice(0, body.length - 2)
+    }
     const headerStr = new TextDecoder('utf-8').decode(headerSection)
     const filenameMatch = headerStr.match(/filename=(?:"([^"]+)"|([^\s;]+))/i)
     if (!filenameMatch || body.length === 0) continue
@@ -35,7 +40,8 @@ export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType:
 
   parts.forEach(({ filename, data }) => {
     const slice = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
-    const blob = new Blob([slice as ArrayBuffer])
+    const mimeType = getMimeType(filename)
+    const blob = new Blob([slice as ArrayBuffer], { type: mimeType })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -45,6 +51,14 @@ export function parseMultipartAndDownload(arrayBuffer: ArrayBuffer, contentType:
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
   })
+}
+
+function getMimeType(filename: string): string {
+  const ext = filename.split('.').pop()?.toLowerCase()
+  if (ext === 'xlsx') return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  if (ext === 'pdf') return 'application/pdf'
+
+  return 'application/octet-stream'
 }
 
 function indexOf(buf: Uint8Array, pattern: Uint8Array, from: number): number {
