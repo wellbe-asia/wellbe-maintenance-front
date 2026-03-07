@@ -5,18 +5,21 @@ import { useEffect, useState } from 'react'
 import { useLocale } from '@/@core/hooks/useLocal'
 
 // ** MUI Imports
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRenderCellParams } from '@mui/x-data-grid'
+import { GridToolbarExport } from '@mui/x-data-grid'
 
 // ** Data Import
 import { useRouter } from 'next/router'
 import { dateFormatApi2DisplayYYYYMMDD } from '@/@core/utils/date'
 import PayoutService from '@/service/PayoutService'
 import Link from 'next/link'
-import ExportToolbar from '@/views/maintenance/ExportToolbar'
+import toast from 'react-hot-toast'
 
 const PayoutList = () => {
   const { t } = useLocale()
@@ -25,6 +28,7 @@ const PayoutList = () => {
   // ** States
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [hideNameColumn, setHideNameColumn] = useState<GridColumnVisibilityModel>({ full_name: true })
+  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
 
   // ** Service
   const payoutService = PayoutService()
@@ -34,6 +38,15 @@ const PayoutList = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
+
+  const handleDownloadNotification = async () => {
+    const result = await payoutService.DownloadPayoutNotification(selectedRowIds)
+    if (result.message) {
+      toast.error(result.message)
+    } else {
+      toast.success('ダウンロードを開始しました。')
+    }
+  }
 
   const columns: GridColDef[] = [
     {
@@ -149,12 +162,40 @@ const PayoutList = () => {
       <CardHeader title={t.SCREEN_TITLE_PAYOUT_LIST} />
       <DataGrid
         autoHeight
-        slots={{ toolbar: ExportToolbar }}
+        slots={{
+          toolbar: () => (
+            <Box
+              sx={{
+                gap: 2,
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: theme => theme.spacing(2, 5, 4, 5)
+              }}
+            >
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <GridToolbarExport csvOptions={{ utf8WithBom: true }} printOptions={{ disableToolbarButton: false }} />
+                <Button
+                  variant='contained'
+                  size='small'
+                  disabled={selectedRowIds.length === 0}
+                  onClick={handleDownloadNotification}
+                >
+                  通知書ダウンロード（Excel/PDF）
+                </Button>
+              </Box>
+            </Box>
+          )
+        }}
         rows={payoutService.payoutList}
         columns={columns}
+        checkboxSelection
         disableRowSelectionOnClick
         pageSizeOptions={[7, 10, 25, 50]}
         paginationModel={paginationModel}
+        rowSelectionModel={selectedRowIds}
+        onRowSelectionModelChange={ids => setSelectedRowIds(ids as string[])}
         columnVisibilityModel={hideNameColumn}
         onPaginationModelChange={setPaginationModel}
         onColumnVisibilityModelChange={newValue => setHideNameColumn(newValue)}

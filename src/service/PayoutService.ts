@@ -11,6 +11,7 @@ import { useLocale } from '@/@core/hooks/useLocal'
 // ** service
 import PAyoutAPI from '@/@core/api/factoryPayout'
 import { PayoutResponseGetType } from '@/@core/api/type/payout'
+import { parseMultipartAndDownload } from '@/@core/utils/multipartDownload'
 
 const PayoutService = () => {
   const { t, GetMessage } = useLocale()
@@ -73,10 +74,48 @@ const PayoutService = () => {
     }
   }
 
+  const DownloadPayoutNotification = async (payoutIds: string[]): Promise<{ message: string }> => {
+    if (payoutIds.length === 0) {
+      return { message: '対象のpayoutを選択してください。' }
+    }
+    try {
+      setLoading(true)
+      const res = await PAyoutAPI.downloadPayoutNotification(payoutIds)
+      if (res.status !== 200 || !res.data) {
+        const message = GetMessage(
+          res.status,
+          (res.data as any)?.result_code ?? SERVER_STATUS.SEVERERROR,
+          (res.data as any)?.message ?? ''
+        )
+
+        return { message: message || 'ダウンロードに失敗しました。' }
+      }
+      const contentType = res.contentType ?? 'multipart/form-data'
+      if (contentType.includes('multipart')) {
+        parseMultipartAndDownload(res.data as ArrayBuffer, contentType)
+
+        return { message: '' }
+      }
+
+      return { message: 'ダウンロードに失敗しました。' }
+    } catch (err: any) {
+      return {
+        message: GetMessage(
+          err?.response?.status ?? 500,
+          err?.response?.data?.result_code ?? SERVER_STATUS.SEVERERROR,
+          err?.response?.data?.message ?? ''
+        )
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return {
     payoutList,
     GetPayoutList,
     CreatePayout,
+    DownloadPayoutNotification,
     loading
   }
 }

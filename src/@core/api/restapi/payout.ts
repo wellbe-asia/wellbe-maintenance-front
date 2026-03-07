@@ -46,6 +46,54 @@ const PayoutAPI = {
     } catch (error: any) {
       return error
     }
+  },
+  downloadPayoutNotification: async (
+    payoutIds: string[]
+  ): Promise<{
+    status: number
+    data?: ArrayBuffer | { result_code?: number; message?: string }
+    contentType?: string
+  }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_PAYMENT_URL}/payment/payout/notification`,
+        { payout_ids: payoutIds },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_PAYMENT_MAINTENANCE
+          },
+          responseType: 'arraybuffer'
+        }
+      )
+
+      return {
+        status: response.status,
+        data: response.data,
+        contentType: response.headers?.['content-type']
+      }
+    } catch (error: any) {
+      const status = error?.response?.status ?? 500
+      const data = error?.response?.data
+      let parsedData: { result_code?: number; message?: string } | undefined
+      if (data instanceof ArrayBuffer) {
+        try {
+          parsedData = JSON.parse(new TextDecoder().decode(data)) as {
+            result_code?: number
+            message?: string
+          }
+        } catch {
+          parsedData = undefined
+        }
+      } else if (data && typeof data === 'object') {
+        parsedData = data
+      }
+
+      return {
+        status,
+        data: parsedData
+      }
+    }
   }
 }
 
