@@ -13,6 +13,7 @@ import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRenderCellParams }
 
 // ** Data Import
 import { useRouter } from 'next/router'
+import ExportToolbar from '@/views/maintenance/ExportToolbar'
 import WellbeAccountService from '@/service/WellbeAccountService'
 import { getLanguageCdWithValue } from '@/configs/locales/locales'
 import { DEFAULT_LANGUAGE } from '@/@core/utils/constant'
@@ -138,6 +139,7 @@ const AccountList = () => {
       <CardHeader title={t.SCREEN_TITLE_ACCOUNT_LIST} />
       <DataGrid
         autoHeight
+        slots={{ toolbar: ExportToolbar }}
         rows={wellbeAccountService.accounts}
         columns={columns}
         disableRowSelectionOnClick
