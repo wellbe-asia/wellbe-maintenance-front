@@ -71,6 +71,7 @@ export default {
   BUTTON_NO: 'No',
   BUTTON_LIMIT_SETTING: 'Booking Limit Setting',
   BUTTON_STORE_LOCATION: 'Store Location',
+  BUTTON_GOOGLE_MAP_DISCONNECT: 'Disconnect Google Maps',
   PLACEHOLDER_STORE_LOCATION_SEARCH: 'Specify store, address, etc.',
   BUTTON_INITIAL_SETTING: 'Initial Setting',
   BUTTON_AUTO_SETTING: 'Auto Setting',

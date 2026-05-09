@@ -10,11 +10,12 @@ import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Alert, AlertColor, Backdrop, CircularProgress, Snackbar } from '@mui/material'
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRenderCellParams } from '@mui/x-data-grid'
 
 // ** Data Import
 import ShopForMaintenanceService from '@/service/ShopForMaintenanceService'
+import ShopLocationGoogleService from '@/service/ShopLocationGoogleService'
 import { useRouter } from 'next/router'
 import ExportToolbar from '@/views/maintenance/ExportToolbar'
 
@@ -23,11 +24,15 @@ const StoreList = () => {
   const router = useRouter()
 
   // ** States
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [message, setMessage] = useState('')
+  const [severity, setSeverity] = useState<AlertColor>('error')
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [hideNameColumn, setHideNameColumn] = useState<GridColumnVisibilityModel>({ full_name: true })
 
   // ** Service
   const shopForMaintenanceService = ShopForMaintenanceService()
+  const shopLocationGoogleService = ShopLocationGoogleService()
 
   useEffect(() => {
     shopForMaintenanceService.GetShopContractedList(true)
@@ -37,6 +42,29 @@ const StoreList = () => {
 
   const onClickNew = () => {
     router.push('/store/new/')
+  }
+
+  const handleClose = () => {
+    setSnackbarOpen(false)
+  }
+
+  const handleDisconnectGoogleMap = async (shopId: string) => {
+    if (!shopId) return
+    if (!window.confirm(t.MESSAGE_DELETE_CONFIRM)) return
+
+    const res = await shopLocationGoogleService.DeleteWithShopId(shopId)
+    if (res.message != '') {
+      setSnackbarOpen(true)
+      setMessage(res.message)
+      setSeverity('error')
+
+      return
+    }
+
+    setSnackbarOpen(true)
+    setMessage(t.MESSAGE_UPDATED)
+    setSeverity('success')
+    shopForMaintenanceService.GetShopContractedList(true)
   }
 
   const columns: GridColDef[] = [
@@ -183,6 +211,16 @@ const StoreList = () => {
                 {t.BUTTON_STORE_LOCATION}
               </Button>
             </Link>
+            <Button
+              size='small'
+              variant='outlined'
+              color='error'
+              sx={{ mr: 2 }}
+              onClick={() => handleDisconnectGoogleMap(params.row.id)}
+              disabled={shopLocationGoogleService.loading}
+            >
+              {t.BUTTON_GOOGLE_MAP_DISCONNECT}
+            </Button>
             <Link href={`/store-maintenance?shop_id=${params.row.id}`} target='_blank'>
               <Button size='small' variant='outlined' color='secondary' sx={{ mr: 2 }}>
                 {t.BUTTON_SHOP_ARTICLE}
@@ -227,6 +265,17 @@ const StoreList = () => {
       >
         <CircularProgress color='inherit' />
       </Backdrop>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={() => setSnackbarOpen(false)}
+        message={message}
+        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+      >
+        <Alert onClose={handleClose} severity={severity} variant='filled' sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Card>
   )
 }

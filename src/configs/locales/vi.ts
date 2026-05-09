@@ -72,6 +72,7 @@ export default {
   BUTTON_NO: 'No',
   BUTTON_LIMIT_SETTING: 'Cài đặt đặt chỗ',
   BUTTON_STORE_LOCATION: 'Vị trí cửa hàng',
+  BUTTON_GOOGLE_MAP_DISCONNECT: 'Ngắt kết nối Google Maps',
   PLACEHOLDER_STORE_LOCATION_SEARCH: 'Chỉ định cửa hàng, địa chỉ, v.v.',
   BUTTON_INITIAL_SETTING: 'Cài đặt ban đầu',
   BUTTON_AUTO_SETTING: 'Cài đặt tự động',

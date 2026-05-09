@@ -88,10 +88,35 @@ const ShopLocationGoogleService = () => {
     }
   }
 
+  const DeleteWithShopId = async (shopId: string): Promise<{ message: string; deletedCount: number | null }> => {
+    setLoading(true)
+    try {
+      const res = await ShopLocationGoogleAPI.DeleteWithShopId(shopId)
+      if (res.status != 200) {
+        const message = GetMessage(
+          res.status,
+
+          // delete APIはdeleted_countのみ返すので result_code が無いケースも想定
+          (res.data as any)?.result_code || SERVER_STATUS.SEVERERROR,
+          (res.data as any)?.message || ''
+        )
+
+        return { message, deletedCount: null }
+      }
+
+      setShopLocationGoogleList([])
+
+      return { message: '', deletedCount: res.data?.deleted_count ?? 0 }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return {
     GetFromGoogleWithShopId,
     GetFromGoogleWithFilter,
     Submit,
+    DeleteWithShopId,
     shopLocationGoogleList,
     loading
   }

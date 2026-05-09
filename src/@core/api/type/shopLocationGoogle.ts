@@ -10,6 +10,12 @@ export type ShopLocationGoogleResponseType = {
   shop_location_googles?: ShopLocationGoogleResponseGetType[]
 }
 
+export type ShopLocationGoogleDeleteResponseType = {
+  result_code: number
+  message: string
+  deleted_count: number
+}
+
 export type ShopLocationGoogleResponseGetType = {
   id: string
   language_cd: number

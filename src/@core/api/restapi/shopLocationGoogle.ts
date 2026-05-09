@@ -1,5 +1,9 @@
 import axios from '@/@core/api/BaseAxios'
-import { ShopLocationGoogleType, ShopLocationGoogleResponseType } from '../type/shopLocationGoogle'
+import {
+  ShopLocationGoogleDeleteResponseType,
+  ShopLocationGoogleType,
+  ShopLocationGoogleResponseType
+} from '../type/shopLocationGoogle'
 
 const ShopLocationGoogleAPI = {
   GetFromGoogleWithShopId: async (
@@ -48,6 +52,24 @@ const ShopLocationGoogleAPI = {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/shop_location_google/submit`,
         JSON.stringify({ shop_id: shopLocationGoogleType.ShopId, place_id: shopLocationGoogleType.PlaceId }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Wellbe_Apikey: process.env.NEXT_PUBLIC_API_KEY_SHOP_MAINTENANCE
+          }
+        }
+      )
+
+      return response
+    } catch (error: any) {
+      return error
+    }
+  },
+  DeleteWithShopId: async (shopId: string): Promise<{ status: number; data: ShopLocationGoogleDeleteResponseType }> => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_SHOP_URL}/shop/shop_location_google/delete_with_shopid`,
+        JSON.stringify({ shop_id: shopId }),
         {
           headers: {
             'Content-Type': 'application/json',
