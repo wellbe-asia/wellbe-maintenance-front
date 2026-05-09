@@ -50,7 +50,7 @@ const StoreList = () => {
 
   const handleDisconnectGoogleMap = async (shopId: string) => {
     if (!shopId) return
-    if (!window.confirm(t.MESSAGE_DELETE_CONFIRM)) return
+    if (!window.confirm(t.MESSAGE_GOOGLE_MAP_DISCONNECT_CONFIRM)) return
 
     const res = await shopLocationGoogleService.DeleteWithShopId(shopId)
     if (res.message != '') {

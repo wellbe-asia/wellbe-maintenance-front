@@ -37,6 +37,7 @@ export default {
   MESSAGE_CANNOT_CONTENTS_URL_DUPPLICATE: '指定されたURLはすでに登録されています。他のURLで登録してください。',
   MESSAGE_SUCCESS_TRANSLATE: '翻訳を開始しました。翻訳が完了するまでに5分ほどかかります。5分後に再度確認してください。',
   MESSAGE_DELETE_CONFIRM: '削除します。よろしいですか？',
+  MESSAGE_GOOGLE_MAP_DISCONNECT_CONFIRM: 'google予約連携解除します。よろしいですか？',
   MESSAGE_COUPON_RATE_OR_AMOUNT_REQUIRED: '割引金額もしくは割引率を入力してください。',
   MESSAGE_COUPON_RATE_RANGE: '割引率は1~100で入力してください。',
   BUTTON_BACK: '戻る',

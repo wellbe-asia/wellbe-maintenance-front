@@ -39,6 +39,7 @@ export default {
   MESSAGE_SUCCESS_TRANSLATE:
     'Đã bắt đầu dịch. Quá trình dịch có thể mất khoảng 5 phút. Vui lòng kiểm tra lại sau 5 phút.',
   MESSAGE_DELETE_CONFIRM: 'Tôi có thể xóa được không?',
+  MESSAGE_GOOGLE_MAP_DISCONNECT_CONFIRM: 'Ngắt kết nối liên kết Google Maps. Bạn có chắc không?',
   MESSAGE_COUPON_RATE_OR_AMOUNT_REQUIRED: 'Vui lòng nhập số tiền chiết khấu hoặc tỷ lệ chiết khấu.',
   MESSAGE_COUPON_RATE_RANGE: 'Vui lòng nhập tỷ lệ chiết khấu từ 1 đến 100.',
   BUTTON_BACK: 'Mặt sau',

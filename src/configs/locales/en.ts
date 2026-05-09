@@ -37,6 +37,7 @@ export default {
   MESSAGE_SUCCESS_TRANSLATE:
     'Translation has started. It may take about 5 minutes to complete. Please check again after 5 minutes.',
   MESSAGE_DELETE_CONFIRM: 'Can I delete?',
+  MESSAGE_GOOGLE_MAP_DISCONNECT_CONFIRM: 'Disconnect Google Maps integration. Are you sure?',
   MESSAGE_COUPON_RATE_OR_AMOUNT_REQUIRED: 'Please enter the discount amount or discount rate.',
   MESSAGE_COUPON_RATE_RANGE: 'Please enter the discount rate between 1 and 100.',
   MESSAGE_APPROVED: 'Approved.',
